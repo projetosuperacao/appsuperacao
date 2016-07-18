@@ -45,7 +45,9 @@
     "ionic-plugin-keyboard",
     "cordova-plugin-inappbrowser@1.1.0",
     "cordova-plugin-inappbrowser",
-    "cordova-plugin-facebook4"
+    "cordova-plugin-facebook4",
+    "cordova-plugin-inappbrowser@~1.1.0",
+    "cordova-plugin-facebook4@~1.7.1"
   ],
   "cordovaPlatforms": []
 }

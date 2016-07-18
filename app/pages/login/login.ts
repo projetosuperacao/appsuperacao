@@ -18,37 +18,73 @@ import { Facebook, GooglePlus } from 'ionic-native';
 export class LoginPage {
   private loading: Loading;
   private page;
+  private messages;
 
   constructor(private nav: NavController, private auth: FirebaseAuth, private user: UserStorageService, private plataform: Platform) {
     this.page = ProfilePage;
+    this.messages = {
+      email_already : "auth/email-already-in-use",
+      email_invalid : "auth/invalid-email",
+      email_not_found : "auth/user-not-found",
+      password_wrong : "auth/wrong-password",
+      weak_password : "auth/weak-password"
+    }
   }
 
   signup(credentials) {
     this.showLoading();
 
+    if(this.validateForm(credentials)) {
+      this.showError(this.validateForm(credentials));
+      return;
+    }
+
     this.auth.createUser(credentials).then((authData) => {
       this.loading.dismiss();
+
+      // === Register user  ===
+      this.user.registerUser({uid: authData.uid, email: credentials.email});
+
       let prompt = Alert.create({
         title: "Sucesso!",
         subTitle: "Sua conta foi criada com sucesso!",
         buttons: ['Ok']
       });
       this.nav.present(prompt);
-    }).catch((error) => {
-      this.showError(error);
+    }).catch((error: any) => {
+      if(this.messages.email_already === error.code) {
+        this.showError("E-mail já cadastrado");
+      } else if (this.messages.weak_password === error.code){
+        this.showError("A senha deve conter no minimo 6 digitos");
+      } else if (this.messages.email_invalid === error.code) {
+        this.showError("Digite um e-mail valido!");
+      }
     })
   }
 
   login(credentials) {
     this.showLoading();
+
+    if(!credentials.email || !credentials.password) {
+      this.showError("Digite todos os campos");
+      return;
+    }
+
     this.auth.login(credentials).then((authData) => {
       // === Set Storage ===
       this.user.setUid(authData.uid);
 
       this.loading.dismiss();
       this.nav.setRoot(this.page);
-    }).catch((error) => {
-      this.showError(error);
+    }).catch((error : any) => {
+      if(this.messages.email_invalid === error.code) {
+        this.showError("Digite um e-mail valido!");
+      } else if (this.messages.password_wrong === error.code) {
+        this.showError("Senha incorreta!");
+      } else if (this.messages.email_not_found === error.code) {
+        this.showError("Este e-mail não está cadastrado!")
+      }
+      console.log(error);
     })
   }
 
@@ -70,7 +106,7 @@ export class LoginPage {
             console.log("Firebase failure: " + JSON.stringify(error));
           });
     }).catch((error) => {
-      this.showError(error);
+      this.showError(JSON.stringify(error));
     })
 
 
@@ -83,6 +119,19 @@ export class LoginPage {
       this.showError('Realize o login em um dispositivo mobile!');
       return;
     }
+
+    GooglePlus.login(["public_profile", "email", "user_friends"]).then((success) => {
+      console.log("Facebook success: " + JSON.stringify(success));
+        this.auth.login(success.authResponse.accessToken, { provider: AuthProviders.Facebook })
+          .then((authData) => {
+            console.log("Firebase success: " + JSON.stringify(success));
+          })
+          .catch((error) => {
+            console.log("Firebase failure: " + JSON.stringify(error));
+          });
+    }).catch((error) => {
+      this.showError(JSON.stringify(error));
+    })
 
   //   this.auth.login({
   //     provider: AuthProviders.Google,
@@ -117,6 +166,18 @@ export class LoginPage {
     });
 
     this.nav.present(prompt);
+  }
+
+  validateForm(credentials) : any {
+    if(!credentials.email || !credentials.password || !credentials.password_confirm) {
+      return 'Preencha todos os campos';
+    }
+
+    if(!(credentials.password === credentials.password_confirm)) {
+      return 'As senhas digitadas não são iguais';
+    }
+
+    return false;
   }
 
 }

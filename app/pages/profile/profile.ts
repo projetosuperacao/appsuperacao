@@ -3,11 +3,13 @@ import { NavController, Alert } from 'ionic-angular';
 import { FirebaseAuth, AuthProviders, AuthMethods, FirebaseRef, AngularFire, FirebaseListObservable } from 'angularfire2';
 import { UserStorageService } from '../../providers/user-storage-service/user-storage-service';
 import { LoginPage } from '../login/login';
+import { MainNav } from '../../directives/main-nav/main-nav';
 
 
 @Component({
   templateUrl: 'build/pages/profile/profile.html',
-  providers: [UserStorageService]
+  providers: [UserStorageService],
+  directives: [MainNav]
 
 })
 
