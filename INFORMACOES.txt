@@ -1,0 +1,21 @@
+------------CORES--------------
+
+COLOR DARK - #9170b1;
+COLOR MAIN - #b29bc8;
+COLOR GREEN FONT - #35A978;
+COLOR GRAY - #333;
+
+
+------------- SOBRE O APP -------------
+O app possuirá 3 tipos de Usuários:
+
+- Superador : paciente ou famaliar que luta contra o cancer
+
+- Anjos : Pessoa que ja superou o cancer
+
+- Arcanjo : Voluntario que cuida da relação do Superador e do Anjo (como se fosse um coordenador dos dois).
+
+
+
+* Recidiva - Retorno de uma doença
+* Metastase - Metástase é basicamente a disseminação do câncer para outros órgãos

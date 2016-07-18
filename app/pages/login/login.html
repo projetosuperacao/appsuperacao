@@ -1,0 +1,72 @@
+<ion-content padding class="login">
+  <div class="parent">
+    <div class="logo">
+      <img src="http://portalsuperacao1.hospedagemdesites.ws/wp-content/uploads/2015/06/logo_superacao.png">
+    </div>
+
+    <div class="form">
+        <div padding>
+          <ion-segment [(ngModel)]="authType" dark>
+            <ion-segment-button value="login" checked>
+              Login
+            </ion-segment-button>
+            <ion-segment-button value="signup">
+              Cadastre-se
+            </ion-segment-button>
+          </ion-segment>
+        </div>
+
+        <!-- =============== SINGIN =============== -->
+        <div [ngSwitch]="authType">
+          <form *ngSwitchWhen="'login'" #loginCreds="ngForm" *ngSwitchDefault (ngSubmit)="login(loginCreds.value)">
+            <ion-item>
+              <ion-input type="email" ngControl="email" placeholder="E-mail"></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-input type="password" ngControl="password" placeholder="Senha"></ion-input>
+            </ion-item>
+
+            <div padding>
+              <button full dark> Login </button>
+            </div>
+          </form>
+
+          <!-- =============== SINGUP =============== -->
+          <form *ngSwitchWhen="'signup'" #signupCreds="ngForm" (ngSubmit)="signup(signupCreds.value)">
+            <ion-item>
+              <ion-input type="email" ngControl="email" placeholder="E-mail"></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-input type="password" ngControl="password" placeholder="Senha"></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-input type="password" ngControl="password" placeholder="Confirmar senha"></ion-input>
+            </ion-item>
+
+            <div padding>
+              <button full dark> Cadastre-se </button>
+            </div>
+          </form>
+        </div>
+
+        <div class="buttons">
+          <ion-row>
+            <ion-col width-50>
+              <button (click)="loginFacebook()" full facebook> <ion-icon name="logo-facebook"></ion-icon> Facebook </button>
+            </ion-col>
+
+            <ion-col width-50>
+                <button (click)="loginGoogle()" full danger> <ion-icon name="logo-googleplus"></ion-icon> Google + </button>
+            </ion-col>
+          </ion-row>
+        </div>
+
+        <div padding>
+           <p *ngIf="error" class="error">{{ error._body }}</p>
+        </div>
+    </div>
+  </div>
+</ion-content>

@@ -1,0 +1,40 @@
+<ion-menu [content]="content">
+      <ion-toolbar dark>
+        <ion-title>Menu</ion-title>
+      </ion-toolbar>
+
+      <ion-content class="menu">
+        <ion-list>
+          <button ion-item (click)="openPage(home)" menuClose>
+            <ion-row>
+              <ion-col width-10> <ion-icon name="star"></ion-icon> </ion-col>
+              <ion-col width-90> Inicio </ion-col>
+            </ion-row>
+          </button>
+
+          <button ion-item  menuClose>
+            <ion-row>
+              <ion-col width-10> <ion-icon name="chatbubbles"></ion-icon> </ion-col>
+              <ion-col width-90> Chat </ion-col>
+            </ion-row>
+          </button>
+
+          <button ion-item  menuClose>
+            <ion-row>
+              <ion-col width-10> <ion-icon name="heart"></ion-icon> </ion-col>
+              <ion-col width-90> Atividades </ion-col>
+            </ion-row>
+          </button>
+
+          <button ion-item (click)="openPage(profile)" menuClose>
+            <ion-row>
+              <ion-col width-10> <ion-icon name="person"></ion-icon> </ion-col>
+              <ion-col width-20> Configurações </ion-col>
+            </ion-row>
+          </button>
+
+        </ion-list>
+      </ion-content>
+</ion-menu>
+
+<ion-nav [root]="rootPage" #content></ion-nav>
