@@ -15,6 +15,8 @@ import { Facebook, GooglePlus } from 'ionic-native';
 })
 
 // cordova plugin add cordova-plugin-facebook4 --save --variable APP_ID="1740412492881253" --variable APP_NAME="Fiap - SuperAcao"
+// ionic plugin add cordova-plugin-googleplus --variable REVERSED_CLIENT_ID=AIzaSyCmuXn0awUahCEUhbXB0GP15EwnepG9KOo
+
 export class LoginPage {
   private loading: Loading;
   private page;
@@ -31,6 +33,7 @@ export class LoginPage {
     }
   }
 
+  // ===================================== SIGNUP ===================================
   signup(credentials) {
     this.showLoading();
 
@@ -62,6 +65,7 @@ export class LoginPage {
     })
   }
 
+  // ===================================== LOGIN ===================================
   login(credentials) {
     this.showLoading();
 
@@ -70,24 +74,29 @@ export class LoginPage {
       return;
     }
 
-    this.auth.login(credentials).then((authData) => {
-      // === Set Storage ===
-      this.user.setUid(authData.uid);
+    this.auth.login(credentials, {
+      provider: AuthProviders.Password,
+      method: AuthMethods.Password
+    }).then((authData) => {
+        // === Set Storage ===
+        this.user.setUid(authData.uid);
 
-      this.loading.dismiss();
-      this.nav.setRoot(this.page);
+        this.loading.dismiss();
+        this.nav.setRoot(this.page);
     }).catch((error : any) => {
-      if(this.messages.email_invalid === error.code) {
-        this.showError("Digite um e-mail valido!");
-      } else if (this.messages.password_wrong === error.code) {
-        this.showError("Senha incorreta!");
-      } else if (this.messages.email_not_found === error.code) {
-        this.showError("Este e-mail não está cadastrado!")
-      }
-      console.log(error);
+        if(this.messages.email_invalid === error.code) {
+          this.showError("Digite um e-mail valido!");
+        } else if (this.messages.password_wrong === error.code) {
+          this.showError("Senha incorreta!");
+        } else if (this.messages.email_not_found === error.code) {
+          this.showError("Este e-mail não está cadastrado!")
+        }
+        console.log(error);
     })
+
   }
 
+  // ===================================== LOGIN FACEBOOK ===================================
   loginFacebook() {
     this.showLoading();
 
@@ -97,21 +106,33 @@ export class LoginPage {
     }
 
     Facebook.login(["public_profile", "email", "user_friends"]).then((success) => {
-      console.log("Facebook success: " + JSON.stringify(success));
-        this.auth.login(success.authResponse.accessToken, { provider: AuthProviders.Facebook })
-          .then((authData) => {
-            console.log("Firebase success: " + JSON.stringify(success));
+
+        firebase.auth().signInWithCredential(success.authResponse.accessToken).then((authData) => {
+          this.showError(JSON.stringify(authData));
+        }).catch((error) => {
+          this.showError(JSON.stringify(error));
+        })
+        /*this.auth.login(success.authResponse.accessToken, {
+          provider: AuthProviders.Facebook,
+          method: AuthMethods.OAuthToken
+        }).then((authData) => {
+            this.showError(JSON.stringify(authData));
           })
           .catch((error) => {
-            console.log("Firebase failure: " + JSON.stringify(error));
-          });
+            this.showError("Firebase failure: " + JSON.stringify(error));
+          });*/
+
     }).catch((error) => {
-      this.showError(JSON.stringify(error));
+        this.showError("Erro!" + JSON.stringify(error));
     })
+
+
+
 
 
   }
 
+  // ===================================== LOGIN GOOGLEPLUS ===================================
   loginGoogle() {
     this.showLoading();
 
@@ -122,8 +143,10 @@ export class LoginPage {
 
     GooglePlus.login(["public_profile", "email", "user_friends"]).then((success) => {
       console.log("Facebook success: " + JSON.stringify(success));
-        this.auth.login(success.authResponse.accessToken, { provider: AuthProviders.Facebook })
-          .then((authData) => {
+        this.auth.login(success.authResponse.accessToken, {
+          provider: AuthProviders.Google,
+          method: AuthMethods.CustomToken
+         }).then((authData) => {
             console.log("Firebase success: " + JSON.stringify(success));
           })
           .catch((error) => {

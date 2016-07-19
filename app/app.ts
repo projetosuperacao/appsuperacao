@@ -21,10 +21,7 @@ import {UserStorageService} from './providers/user-storage-service/user-storage-
       databaseURL: "https://projetosuperacao-e1827.firebaseio.com",
       storageBucket: "projetosuperacao-e1827.appspot.com"
     }),
-    firebaseAuthConfig({
-      provider: AuthProviders.Password,
-      method: AuthMethods.Password
-    })
+    firebaseAuthConfig({})
   ]
 })
 
