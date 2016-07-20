@@ -22,12 +22,21 @@ export class UserStorageService {
     this.storage.clear();
   }
 
-  registerUser(data) {
-    this.db = this.af.database.list('/users');
-    this.db.push(data).then((sucess) => {
-      console.log(sucess);
-    }).catch((error) => {
-      console.log(error);
+  registerUser(result) {
+    let data = {
+      provider : result.provider,
+      name : result.name || null,
+      email: result.email || null,
+      avatar: result.avatar || null
+    }
+
+    this.db = this.af.database.list('/users/' + result.uid);
+    this.db.push(data);
+  }
+
+  getUser(token, callBack) {
+    this.af.database.list('/users/' + token).subscribe((snapshots) => {
+      callBack(snapshots);
     });
   }
 

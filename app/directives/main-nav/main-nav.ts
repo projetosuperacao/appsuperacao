@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NavController } from 'ionic-angular';
 import { MyApp } from '../../app';
 import { HomePage } from '../../pages/home/home';
 import { ProfilePage } from '../../pages/profile/profile';
@@ -12,12 +13,12 @@ export class MainNav {
   public home = HomePage;
   public profile = ProfilePage;
 
-  constructor() {
+  constructor(private nav: NavController) {
 
   }
 
-  /*
+
   openPage(page) {
-    this.app.openPage(page);
-  }*/
+    this.nav.setRoot(page);
+  }
 }

@@ -7,6 +7,7 @@ import { UserStorageService } from '../../providers/user-storage-service/user-st
 import { FORM_DIRECTIVES } from '@angular/common';
 import { Facebook, GooglePlus } from 'ionic-native';
 
+declare let firebase: any;
 
 @Component({
   templateUrl: 'build/pages/login/login.html',
@@ -23,7 +24,7 @@ export class LoginPage {
   private messages;
 
   constructor(private nav: NavController, private auth: FirebaseAuth, private user: UserStorageService, private plataform: Platform) {
-    this.page = ProfilePage;
+    this.page = HomePage;
     this.messages = {
       email_already : "auth/email-already-in-use",
       email_invalid : "auth/invalid-email",
@@ -46,13 +47,17 @@ export class LoginPage {
       this.loading.dismiss();
 
       // === Register user  ===
-      this.user.registerUser({uid: authData.uid, email: credentials.email});
+      this.user.registerUser({
+        provider: authData.provider,
+        uid: authData.uid,
+        email: credentials.email});
 
       let prompt = Alert.create({
         title: "Sucesso!",
         subTitle: "Sua conta foi criada com sucesso!",
         buttons: ['Ok']
       });
+
       this.nav.present(prompt);
     }).catch((error: any) => {
       if(this.messages.email_already === error.code) {
@@ -62,6 +67,7 @@ export class LoginPage {
       } else if (this.messages.email_invalid === error.code) {
         this.showError("Digite um e-mail valido!");
       }
+      console.log(error);
     })
   }
 
@@ -100,46 +106,37 @@ export class LoginPage {
   loginFacebook() {
     this.showLoading();
 
-    if(!this.plataform.is('cordova')) {
-      this.showError('Realize o login em um dispositivo mobile!');
-      return;
-    }
-
     Facebook.login(["public_profile", "email", "user_friends"]).then((success) => {
+        let creds = firebase.auth.FacebookAuthProvider.credential(success.authResponse.accessToken)
 
-        firebase.auth().signInWithCredential(success.authResponse.accessToken).then((authData) => {
-          this.showError(JSON.stringify(authData));
-        }).catch((error) => {
-          this.showError(JSON.stringify(error));
-        })
-        /*this.auth.login(success.authResponse.accessToken, {
+        this.auth.login(creds, {
           provider: AuthProviders.Facebook,
           method: AuthMethods.OAuthToken
         }).then((authData) => {
-            this.showError(JSON.stringify(authData));
-          })
-          .catch((error) => {
-            this.showError("Firebase failure: " + JSON.stringify(error));
-          });*/
+          // === Set Storage ===
+          this.user.setUid(authData.uid);
+          // === Set database ===
+          this.validateLoginSocial(authData);
+
+          this.loading.dismiss();
+          this.nav.setRoot(this.page);
+          console.log(authData);
+
+        }).catch((error) => {
+          console.log(error);
+          this.showError("Firebase failure:");
+        });
+
 
     }).catch((error) => {
-        this.showError("Erro!" + JSON.stringify(error));
+      this.loading.dismiss();
+      console.log(error);
     })
-
-
-
-
-
   }
 
   // ===================================== LOGIN GOOGLEPLUS ===================================
   loginGoogle() {
     this.showLoading();
-
-    if(!this.plataform.is('cordova')) {
-      this.showError('Realize o login em um dispositivo mobile!');
-      return;
-    }
 
     GooglePlus.login(["public_profile", "email", "user_friends"]).then((success) => {
       console.log("Facebook success: " + JSON.stringify(success));
@@ -155,19 +152,6 @@ export class LoginPage {
     }).catch((error) => {
       this.showError(JSON.stringify(error));
     })
-
-  //   this.auth.login({
-  //     provider: AuthProviders.Google,
-  //     method: AuthMethods.Popup,
-  //   }).then((authData) => {
-  //     // === Set Storage ===
-  //     this.user.setUid(authData.uid);
-  //
-  //     this.loading.dismiss();
-  //     this.nav.setRoot(this.page);
-  //   }).catch((error) => {
-  //     this.showError(error);
-  //   })
    }
 
   showLoading() {
@@ -201,6 +185,16 @@ export class LoginPage {
     }
 
     return false;
+  }
+
+  validateLoginSocial(authData) {
+    this.user.getUser(authData.uid, (datas) => {
+      if(!datas.length) {
+        console.log(authData);
+        this.user.registerUser(authData);
+        return;
+      }
+    });
   }
 
 }

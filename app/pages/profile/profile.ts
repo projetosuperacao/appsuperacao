@@ -24,12 +24,4 @@ export class ProfilePage {
     this.nav.setRoot(LoginPage);
   }
 
-  ngOnInit() {
-    this.auth.subscribe((data) => {
-      if(data) {
-        console.log(data);
-      }
-    })
-  }
-
 }

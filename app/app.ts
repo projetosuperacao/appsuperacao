@@ -40,7 +40,7 @@ export class MyApp {
         }
       })
 
-      this.rootPage = this.home;
+      this.rootPage = this.profile;
 
       StatusBar.styleDefault();
     });
