@@ -15,7 +15,7 @@ import { Facebook, GooglePlus } from 'ionic-native';
 })
 
 // cordova plugin add cordova-plugin-facebook4 --save --variable APP_ID="1740412492881253" --variable APP_NAME="Fiap - SuperAcao"
-// ionic plugin add cordova-plugin-googleplus --variable REVERSED_CLIENT_ID=AIzaSyCmuXn0awUahCEUhbXB0GP15EwnepG9KOo
+// ionic plugin add cordova-plugin-googleplus --variable REVERSED_CLIENT_ID=924604069176-70ol412vrss3c76v99ps1k19fv1kdeam.apps.googleusercontent.com
 
 export class LoginPage {
   private loading: Loading;
@@ -147,10 +147,10 @@ export class LoginPage {
           provider: AuthProviders.Google,
           method: AuthMethods.CustomToken
          }).then((authData) => {
-            console.log("Firebase success: " + JSON.stringify(success));
+            this.showError("Firebase success: " + JSON.stringify(success));
           })
           .catch((error) => {
-            console.log("Firebase failure: " + JSON.stringify(error));
+            this.showError("Firebase failure: " + JSON.stringify(error));
           });
     }).catch((error) => {
       this.showError(JSON.stringify(error));
