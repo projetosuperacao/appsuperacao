@@ -24,7 +24,7 @@ export class LoginPage {
   private messages;
 
   constructor(private nav: NavController, private auth: FirebaseAuth, private user: UserStorageService, private plataform: Platform) {
-    this.page = HomePage;
+    this.page = ProfilePage;
     this.messages = {
       email_already : "auth/email-already-in-use",
       email_invalid : "auth/invalid-email",
@@ -119,19 +119,23 @@ export class LoginPage {
           this.validateLoginSocial(authData);
 
           this.loading.dismiss();
-          this.nav.setRoot(this.page);
-          console.log(authData);
+          this.nav.setRoot(HomePage);
 
+          console.log(authData);
         }).catch((error) => {
           console.log(error);
           this.showError("Firebase failure:");
         });
 
+    console.log(success);
 
     }).catch((error) => {
       this.loading.dismiss();
       console.log(error);
     })
+
+
+
   }
 
   // ===================================== LOGIN GOOGLEPLUS ===================================
@@ -147,6 +151,7 @@ export class LoginPage {
       }).then((authData) => {
         // === Set Storage ===
         this.user.setUid(authData.uid);
+
         // === Set database ===
         this.validateLoginSocial(authData);
 

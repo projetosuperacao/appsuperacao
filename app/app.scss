@@ -1,4 +1,12 @@
 .main-menu {
   text-align: center;
   color: #FFF;
+
+  ion-navbar {
+    padding: 0px;
+  }
+
+  .selected {
+    background-color:#000;
+  }
 }

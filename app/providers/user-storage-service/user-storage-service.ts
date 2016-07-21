@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Storage, SqlStorage } from 'ionic-angular';
+import { Storage, LocalStorage } from 'ionic-angular';
 import { AngularFire, FirebaseListObservable } from 'angularfire2';
 import 'rxjs/add/operator/map';
 
@@ -11,7 +11,7 @@ export class UserStorageService {
   private db : FirebaseListObservable<any>;
 
   constructor(private af: AngularFire) {
-    this.storage = new Storage(SqlStorage);
+    this.storage = new Storage(LocalStorage);
   }
 
   setUid(uid) {

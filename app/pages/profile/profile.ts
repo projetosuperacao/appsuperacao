@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, Alert } from 'ionic-angular';
-import { FirebaseAuth, AuthProviders, AuthMethods, FirebaseRef, AngularFire, FirebaseListObservable } from 'angularfire2';
+import { FirebaseAuth, AngularFire, FirebaseListObservable } from 'angularfire2';
 import { UserStorageService } from '../../providers/user-storage-service/user-storage-service';
 import { LoginPage } from '../login/login';
 import { HomePage } from '../home/home';
@@ -14,8 +14,8 @@ import { HomePage } from '../home/home';
 
 export class ProfilePage {
   private home = HomePage;
-  
-  constructor(private nav: NavController, private user: UserStorageService, private af: AngularFire, private auth : FirebaseAuth) {
+
+  constructor(private nav: NavController, private user: UserStorageService, private auth : FirebaseAuth) {
 
   }
   openPage(page) {
