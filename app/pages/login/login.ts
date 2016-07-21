@@ -138,22 +138,32 @@ export class LoginPage {
   loginGoogle() {
     this.showLoading();
 
-    GooglePlus.login(["public_profile", "email", "user_friends"]).then((success) => {
-      console.log("Facebook success: " + JSON.stringify(success));
-        this.auth.login(success.authResponse.accessToken, {
-          provider: AuthProviders.Google,
-          method: AuthMethods.CustomToken
-         }).then((authData) => {
-            this.showError("Firebase success: " + JSON.stringify(success));
-          })
-          .catch((error) => {
-            this.showError("Firebase failure: " + JSON.stringify(error));
-          });
+    GooglePlus.login(["email"]).then((success) => {
+      let creds = firebase.auth.GoogleAuthProvider.credential(success.authResponse.accessToken)
+
+      this.auth.login(creds, {
+        provider: AuthProviders.Google,
+        method: AuthMethods.OAuthToken
+      }).then((authData) => {
+        // === Set Storage ===
+        this.user.setUid(authData.uid);
+        // === Set database ===
+        this.validateLoginSocial(authData);
+
+        this.loading.dismiss();
+        this.nav.setRoot(this.page);
+        console.log(authData);
+
+      }).catch((error) => {
+        console.log(error);
+        this.showError("Firebase failure:");
+      });
     }).catch((error) => {
-      this.showError(JSON.stringify(error));
+      this.showError("Não logo!" + JSON.stringify(error));
     })
    }
 
+  // ===================================== OTHERS METHODS ===================================
   showLoading() {
     this.loading = Loading.create({
       content: "Aguarde..."

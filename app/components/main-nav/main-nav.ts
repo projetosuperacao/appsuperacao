@@ -1,8 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { NavController } from 'ionic-angular';
-import { MyApp } from '../../app';
-import { HomePage } from '../../pages/home/home';
-import { ProfilePage } from '../../pages/profile/profile';
 
 @Component({
   selector: 'main-nav',
@@ -10,8 +7,6 @@ import { ProfilePage } from '../../pages/profile/profile';
 })
 
 export class MainNav {
-  public home = HomePage;
-  public profile = ProfilePage;
 
   constructor(private nav: NavController) {
 

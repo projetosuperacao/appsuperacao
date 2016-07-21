@@ -36,11 +36,10 @@ export class MyApp {
       this.user.storage.get('uid').then(value => {
         if(!value) {
           this.rootPage = this.login;
-          return;
+        } else {
+          this.rootPage = this.profile;
         }
       })
-
-      this.rootPage = this.profile;
 
       StatusBar.styleDefault();
     });
