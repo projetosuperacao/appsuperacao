@@ -4,9 +4,17 @@
 
   ion-navbar {
     padding: 0px;
+
+    ion-row {
+      height: 5.6rem;
+      line-height: 5.1rem;
+      
+      .selected {
+        background-color: #b29bc8;
+      }
+
+    }
+
   }
 
-  .selected {
-    background-color:#000;
-  }
 }

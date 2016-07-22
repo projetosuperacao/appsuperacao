@@ -4,6 +4,8 @@ import { LoginPage } from '../login/login';
 import { ProfilePage } from '../profile/profile';
 import { UserStorageService } from '../../providers/user-storage-service/user-storage-service';
 
+declare let firebase: any;
+
 @Component({
   templateUrl: 'build/pages/home/home.html',
     providers: [UserStorageService]

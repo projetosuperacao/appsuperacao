@@ -25,9 +25,9 @@ export class UserStorageService {
   registerUser(result) {
     let data = {
       provider : result.provider,
-      name : result.name || null,
-      email: result.email || null,
-      avatar: result.avatar || null
+      name : (result.name || result.auth.displayName) || null,
+      email: (result.email || result.auth.email) || null,
+      avatar: result.auth.photoURL || null
     }
 
     this.db = this.af.database.list('/users/' + result.uid);

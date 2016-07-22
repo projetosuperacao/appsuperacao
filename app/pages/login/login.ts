@@ -7,8 +7,6 @@ import { UserStorageService } from '../../providers/user-storage-service/user-st
 import { FORM_DIRECTIVES } from '@angular/common';
 import { Facebook, GooglePlus } from 'ionic-native';
 
-declare let firebase: any;
-
 @Component({
   templateUrl: 'build/pages/login/login.html',
   directives: [FORM_DIRECTIVES],
@@ -38,8 +36,8 @@ export class LoginPage {
   signup(credentials) {
     this.showLoading();
 
-    if(this.validateForm(credentials)) {
-      this.showError(this.validateForm(credentials));
+    if(this._validateForm(credentials)) {
+      this.showError(this._validateForm(credentials));
       return;
     }
 
@@ -84,6 +82,7 @@ export class LoginPage {
       provider: AuthProviders.Password,
       method: AuthMethods.Password
     }).then((authData) => {
+        console.log(credentials);
         // === Set Storage ===
         this.user.setUid(authData.uid);
 
@@ -107,16 +106,19 @@ export class LoginPage {
     this.showLoading();
 
     Facebook.login(["public_profile", "email", "user_friends"]).then((success) => {
-        let creds = firebase.auth.FacebookAuthProvider.credential(success.authResponse.accessToken)
+        let creds = (firebase.auth.FacebookAuthProvider as any).credential(success.authResponse.accessToken)
 
         this.auth.login(creds, {
           provider: AuthProviders.Facebook,
-          method: AuthMethods.OAuthToken
+          method: AuthMethods.OAuthToken,
+          remember: 'default',
+          scope: ['email']
         }).then((authData) => {
+          console.log(authData.auth);
           // === Set Storage ===
           this.user.setUid(authData.uid);
           // === Set database ===
-          this.validateLoginSocial(authData);
+          this._validateLoginSocial(authData);
 
           this.loading.dismiss();
           this.nav.setRoot(HomePage);
@@ -126,8 +128,6 @@ export class LoginPage {
           console.log(error);
           this.showError("Firebase failure:");
         });
-
-    console.log(success);
 
     }).catch((error) => {
       this.loading.dismiss();
@@ -143,7 +143,7 @@ export class LoginPage {
     this.showLoading();
 
     GooglePlus.login(["email"]).then((success) => {
-      let creds = firebase.auth.GoogleAuthProvider.credential(success.authResponse.accessToken)
+      let creds = (firebase.auth.GoogleAuthProvider as any).credential(success.authResponse.accessToken)
 
       this.auth.login(creds, {
         provider: AuthProviders.Google,
@@ -153,7 +153,7 @@ export class LoginPage {
         this.user.setUid(authData.uid);
 
         // === Set database ===
-        this.validateLoginSocial(authData);
+        this._validateLoginSocial(authData);
 
         this.loading.dismiss();
         this.nav.setRoot(this.page);
@@ -182,7 +182,7 @@ export class LoginPage {
     });
 
     let prompt = Alert.create({
-      title: "Falha",
+      title: "Ops! Ocorreu um erro!",
       subTitle: text,
       buttons: ['Ok']
     });
@@ -190,7 +190,7 @@ export class LoginPage {
     this.nav.present(prompt);
   }
 
-  validateForm(credentials) : any {
+  _validateForm(credentials) : any {
     if(!credentials.email || !credentials.password || !credentials.password_confirm) {
       return 'Preencha todos os campos';
     }
@@ -202,14 +202,26 @@ export class LoginPage {
     return false;
   }
 
-  validateLoginSocial(authData) {
+  _validateLoginSocial(authData) {
     this.user.getUser(authData.uid, (datas) => {
       if(!datas.length) {
-        console.log(authData);
         this.user.registerUser(authData);
         return;
       }
     });
   }
+
+  _FBUserProfile() {
+   return new Promise((resolve, reject) => {
+     Facebook.api('me?fields=id,name,email,first_name,last_name,picture.width(100).height(100).as(picture_small),picture.width(720).height(720).as(picture_large)', [])
+       .then((profileData) => {
+         console.log(JSON.stringify(profileData));
+         return resolve(profileData);
+       }, (err) => {
+         console.log(JSON.stringify(err));
+         return reject(err);
+       });
+   });
+ }
 
 }
