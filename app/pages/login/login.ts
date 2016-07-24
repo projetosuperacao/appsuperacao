@@ -14,7 +14,8 @@ import { Facebook, GooglePlus } from 'ionic-native';
 })
 
 // cordova plugin add cordova-plugin-facebook4 --save --variable APP_ID="1740412492881253" --variable APP_NAME="Fiap - SuperAcao"
-// ionic plugin add cordova-plugin-googleplus --variable REVERSED_CLIENT_ID=924604069176-70ol412vrss3c76v99ps1k19fv1kdeam.apps.googleusercontent.com
+// ionic plugin add cordova-plugin-googleplus --variable REVERSED_CLIENT_ID=236648092205-buoo42f7tfit2ojq3bf1jjcmnrgjchg3.apps.googleusercontent.com
+// SHA1 - 4D:FE:9A:38:FD:2F:67:3D:95:C5:1F:BD:AE:25:E8:74:5C:67:ED:7C - keystore
 
 export class LoginPage {
   private loading: Loading;
@@ -46,6 +47,7 @@ export class LoginPage {
 
       // === Register user  ===
       this.user.registerUser({
+        name: credentials.name,
         provider: authData.provider,
         uid: authData.uid,
         email: credentials.email});
@@ -114,7 +116,6 @@ export class LoginPage {
           remember: 'default',
           scope: ['email']
         }).then((authData) => {
-          console.log(authData.auth);
           // === Set Storage ===
           this.user.setUid(authData.uid);
           // === Set database ===
@@ -123,7 +124,6 @@ export class LoginPage {
           this.loading.dismiss();
           this.nav.setRoot(HomePage);
 
-          console.log(authData);
         }).catch((error) => {
           console.log(error);
           this.showError("Firebase failure:");
@@ -141,17 +141,19 @@ export class LoginPage {
   // ===================================== LOGIN GOOGLEPLUS ===================================
   loginGoogle() {
     this.showLoading();
-
-    GooglePlus.login(["email"]).then((success) => {
+    GooglePlus.login({}).then((success) => {
+      console.log(success);
       let creds = (firebase.auth.GoogleAuthProvider as any).credential(success.authResponse.accessToken)
+
 
       this.auth.login(creds, {
         provider: AuthProviders.Google,
-        method: AuthMethods.OAuthToken
+        method: AuthMethods.OAuthToken,
+        remember: 'default',
+        scope: ['email']
       }).then((authData) => {
         // === Set Storage ===
         this.user.setUid(authData.uid);
-
         // === Set database ===
         this._validateLoginSocial(authData);
 
@@ -165,6 +167,7 @@ export class LoginPage {
       });
     }).catch((error) => {
       this.showError("Não logo!" + JSON.stringify(error));
+      console.log(error);
     })
    }
 

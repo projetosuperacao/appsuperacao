@@ -23,15 +23,27 @@ export class UserStorageService {
   }
 
   registerUser(result) {
+    if(result.auth) {
+      result.photoURL = result.auth.photoURL;
+      result.name = result.auth.displayName;
+      result.email = result.auth.email;
+    }
+
+    console.log(result.name);
+
     let data = {
       provider : result.provider,
-      name : (result.name || result.auth.displayName) || null,
-      email: (result.email || result.auth.email) || null,
-      avatar: result.auth.photoURL || null
+      name : result.name || null,
+      email: result.email || null,
+      avatar: result.photoURL || null
     }
 
     this.db = this.af.database.list('/users/' + result.uid);
-    this.db.push(data);
+    this.db.push(data).then((success) => {
+      //console.log(success);
+    }).catch((error) => {
+      console.log(error);
+    });
   }
 
   getUser(token, callBack) {
