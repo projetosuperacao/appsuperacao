@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-navbar dark>
+    <ion-title>Edição de perfil </ion-title>
+    <ion-buttons start>
+      <button (click)="close()"><ion-icon name="close"></ion-icon></button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-item>
+    <ion-label stacked> Nome do usuário </ion-label>
+    <ion-input type="text"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label stacked> Data de nascimento </ion-label>
+    <ion-input type="date"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label stacked> Tipo do usuário </ion-label>
+    <ion-select>
+      <ion-option value="superador" checked="true"> Superador </ion-option>
+      <ion-option value="anjo"> Anjo </ion-option>
+      <ion-option value="arcanjo"> Arcanjo </ion-option>
+    </ion-select>
+  </ion-item>
+
+</ion-content>

@@ -206,7 +206,7 @@ export class LoginPage {
   }
 
   _validateLoginSocial(authData) {
-    this.user.getUser(authData.uid, (datas) => {
+    this.user.getUser((datas) => {
       if(!datas.length) {
         this.user.registerUser(authData);
         return;

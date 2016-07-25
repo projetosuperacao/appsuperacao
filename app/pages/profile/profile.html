@@ -9,10 +9,59 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content padding class="profile">
   <ion-card>
-    <h1> Test </h1>
+    <ion-item>
+      <ion-avatar item-left>
+        <img src="https://scontent.xx.fbcdn.net/v/t1.0-1/p100x100/12063636_941683082573027_7391742278564588640_n.jpg?oh=cde59de8c3f06f56c5bf969015c98785&oe=5830B050">
+      </ion-avatar>
+
+      <ion-row>
+        <ion-col width-80>
+          <h2> {{ (profileDatas | async)?.user?.name }} </h2>
+          <p>Arcanjo</p>
+        </ion-col>
+
+        <ion-col width-20 class="edit" (click)="editProfile()">
+          <ion-icon name="md-create"></ion-icon>
+        </ion-col>
+      </ion-row>
+
+    </ion-item>
+
+    <img src="http://wide-wallpapers.net/wp-content/uploads/walls/thumbs/Island-of-Aitutaki-in-the-Pacific-Ocean-600x400.jpg" />
+
   </ion-card>
 
-  <button (click)="logout()" full danger> Sair </button>
+  <ion-card>
+    <ion-card-header>
+      <ion-row>
+        <ion-col width-20> <ion-icon name="calendar"></ion-icon> </ion-col>
+        <ion-col width-80> <h1> Agenda </h1> </ion-col>
+      </ion-row>
+    </ion-card-header>
+
+    <ion-row class="calendar">
+      <ion-col width-25 class="dates">
+        <h1> 29 </h1>
+        <p class="content"> Janeiro </p>
+        <p class="content"> Sexta </p>
+        <p class="content"> 9:30 </p>
+      </ion-col>
+
+      <ion-col width-75>
+        <h2> Titulo do evento </h2>
+        <p class="content"> Lorem ipsum dolor sit amet, consectetur adipiscing elit. </p>
+        <p class="location"> Av. Lins de vasconcelis </p>
+       </ion-col>
+    </ion-row>
+
+    <ion-row class="buttons">
+      <ion-col width-50> <ion-icon name="add-circle"></ion-icon> Criar evento  </ion-col>
+      <ion-col width-50> <ion-icon name="md-list-box"></ion-icon> Listar eventos  </ion-col>
+    </ion-row>
+
+  </ion-card>
+
+  <button (click)="logout()" full danger> Logout </button>
 </ion-content>
