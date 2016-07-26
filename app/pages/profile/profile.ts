@@ -22,14 +22,9 @@ export class ProfilePage {
   }
 
   ngOnInit() {
-    this.user.getUser(datas => {
+    this.user.getUserPromise().then((datas) => {
       this.profileDatas = datas;
     })
-
-    /*this.user.getUserPromise().then((datas) => {
-      this.profileDatas = datas;
-      console.log(datas);
-    })*/
 
   }
 
@@ -37,8 +32,14 @@ export class ProfilePage {
     this.nav.setRoot(page);
   }
 
-  editProfile() {
-    let modal = Modal.create(ProfileEditPage);
+  editProfile(user) {
+    let modal = Modal.create(ProfileEditPage, {'user' : user});
+
+    modal.onDismiss((datas) => {
+      console.log(datas);
+      this.user.updateUser(datas, this.profileDatas.uid);
+    })
+
     this.nav.present(modal);
   }
 

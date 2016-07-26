@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { Storage, LocalStorage } from 'ionic-angular';
 import { AngularFire, FirebaseListObservable } from 'angularfire2';
 import 'rxjs/add/operator/map';
@@ -9,17 +9,19 @@ import 'rxjs/add/operator/map';
 export class UserStorageService {
   public storage : Storage;
   private db : FirebaseListObservable<any>;
+  private uid;
 
   constructor(private af: AngularFire) {
     this.storage = new Storage(LocalStorage);
+
   }
 
-  setUser(datas) {
+  /*setUser(datas) {
     this.storage.set('uid', datas.uid);
     this.storage.set('email', datas.auth.email);
-    //this.storage.set('name', datas.name);
+    this.storage.set('name', datas.name);
     this.storage.set('uid', datas.auth.provider);
-  }
+  }*/
 
   setUid(uid) {
     this.storage.set('uid', uid);
@@ -42,7 +44,8 @@ export class UserStorageService {
       provider : result.provider,
       name : result.name || null,
       email: result.email || null,
-      avatar: result.photoURL || null
+      avatar: result.photoURL || null,
+      type_user: "Superador"
     }
 
     this.db = this.af.database.list('/users/' + result.uid);
@@ -55,8 +58,9 @@ export class UserStorageService {
 
   getUser(callBack) {
     this.storage.get('uid').then((uid) => {
-      this.af.database.list('/users/' + uid).subscribe((snapshots) => {
+        this.af.database.list('/users/' + uid).subscribe((snapshots) => {
         let result = {
+          'uid' : uid,
           user: snapshots["0"],
           length: snapshots.length
         }
@@ -65,18 +69,35 @@ export class UserStorageService {
     });
   }
 
-  /*getUserPromise() {
+  getUserPromise() {
     return new Promise((resolve) => {
-      this.storage.get('uid').then((uid) => {
-        this.af.database.list('/users/' + uid).subscribe((snapshots) => {
-          let result = {
-            user: snapshots["0"],
-            length: snapshots.length
-          }
-          resolve(result);
+
+        this.storage.get('uid').then((uid) => {
+          this.af.database.list('/users/' + uid).subscribe((snapshots) => {
+            let result = {
+              'uid' : uid,
+              user: snapshots["0"],
+              length: snapshots.length
+            }
+            resolve(result);
+          });
         });
-      });
     });
-  }*/
+  }
+
+  updateUser(user, uid) {
+    let key = user.$key;
+    delete user.$key;
+
+    console.log(key);
+    this.db = this.af.database.list('/users/' + uid);
+    this.db.update(key, user).then((success) => {
+        console.log('foi!');
+    }).catch((error) => {
+        console.log(error)
+    })
+  }
+
+
 
 }

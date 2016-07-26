@@ -8,7 +8,7 @@
     ion-row {
       height: 5.6rem;
       line-height: 5.1rem;
-      
+
       .selected {
         background-color: #b29bc8;
       }
@@ -17,4 +17,13 @@
 
   }
 
+}
+
+.error-field {
+  display: block;
+  background: #f2dede;
+  color: #a94442;
+  margin-top: 0.5rem;
+  padding: 0.6em;
+  margin-left: 16px;
 }
