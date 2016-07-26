@@ -84,8 +84,8 @@ export class LoginPage {
       provider: AuthProviders.Password,
       method: AuthMethods.Password
     }).then((authData) => {
-        console.log(credentials);
         // === Set Storage ===
+        //this.user.setUser(authData);
         this.user.setUid(authData.uid);
 
         this.loading.dismiss();

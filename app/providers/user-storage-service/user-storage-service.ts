@@ -14,6 +14,13 @@ export class UserStorageService {
     this.storage = new Storage(LocalStorage);
   }
 
+  setUser(datas) {
+    this.storage.set('uid', datas.uid);
+    this.storage.set('email', datas.auth.email);
+    //this.storage.set('name', datas.name);
+    this.storage.set('uid', datas.auth.provider);
+  }
+
   setUid(uid) {
     this.storage.set('uid', uid);
   }
@@ -58,12 +65,18 @@ export class UserStorageService {
     });
   }
 
-  getUserPromise() {
+  /*getUserPromise() {
     return new Promise((resolve) => {
       this.storage.get('uid').then((uid) => {
-          resolve(uid)
-      })
+        this.af.database.list('/users/' + uid).subscribe((snapshots) => {
+          let result = {
+            user: snapshots["0"],
+            length: snapshots.length
+          }
+          resolve(result);
+        });
+      });
     });
-  }
+  }*/
 
 }

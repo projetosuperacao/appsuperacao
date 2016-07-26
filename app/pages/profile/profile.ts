@@ -15,15 +15,21 @@ import { ProfileEditPage } from '../profile-edit/profile-edit';
 
 export class ProfilePage {
   private home = HomePage;
-  private profileDatas: Promise<any>;
+  private profileDatas: any;
 
   constructor(private nav: NavController, private user: UserStorageService, private auth : FirebaseAuth) {
-    this.profileDatas = this.user.getUserPromise();
 
   }
 
   ngOnInit() {
+    this.user.getUser(datas => {
+      this.profileDatas = datas;
+    })
 
+    /*this.user.getUserPromise().then((datas) => {
+      this.profileDatas = datas;
+      console.log(datas);
+    })*/
 
   }
 
