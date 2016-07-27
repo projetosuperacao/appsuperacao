@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController, Alert, Modal } from 'ionic-angular';
+import { NavController, Alert, Modal, Loading } from 'ionic-angular';
 import { FirebaseAuth, AngularFire, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2';
 import { UserStorageService } from '../../providers/user-storage-service/user-storage-service';
 import { LoginPage } from '../login/login';
@@ -16,13 +16,18 @@ import { ProfileEditPage } from '../profile-edit/profile-edit';
 export class ProfilePage {
   private home = HomePage;
   private profileDatas: any;
-  private test;
-
+  private loading : Loading;
 
   constructor(private nav: NavController,
     private user: UserStorageService,
     private auth : FirebaseAuth,
     private af: AngularFire) {
+
+  }
+
+  ngOnInit() {
+    //this.showLoading();
+
     this.user.storage.get('uid').then((uid) => {
       this.af.database.object('/users/' + uid).subscribe((data) => {
         let userData = data[Object.keys(data)[0]];
@@ -30,12 +35,12 @@ export class ProfilePage {
         this.profileDatas = userData;
         this.profileDatas.$key = Object.keys(data)[0];
         this.profileDatas.uid = data.$key;
+        //this.loading.dismiss();
+
       });
     })
-  }
 
-  ngOnInit() {
-
+    console.log(this.profileDatas);
   }
 
   openPage(page) {
@@ -56,6 +61,14 @@ export class ProfilePage {
     this.user.clear();
     this.auth.logout();
     this.nav.setRoot(LoginPage);
+  }
+
+  showLoading() {
+    this.loading = Loading.create({
+      content: "Aguarde..."
+    })
+
+    this.nav.present(this.loading);
   }
 
 }

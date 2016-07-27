@@ -42,4 +42,5 @@
     <plugin name="cordova-plugin-googleplus" spec="https://github.com/EddyVerbruggen/cordova-plugin-googleplus">
         <variable name="REVERSED_CLIENT_ID" value="236648092205-buoo42f7tfit2ojq3bf1jjcmnrgjchg3.apps.googleusercontent.com" />
     </plugin>
+    <plugin name="cordova-plugin-crop" spec="~0.1.0" />
 </widget>
