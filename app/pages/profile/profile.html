@@ -18,11 +18,11 @@
 
       <ion-row>
         <ion-col width-80>
-          <h2> {{ profileDatas?.user?.name }} </h2>
-          <p> {{  profileDatas?.user?.type_user }}</p>
+          <h2> {{ profileDatas?.name }} </h2>
+          <p> {{ profileDatas?.type_user }}</p>
         </ion-col>
 
-        <ion-col width-20 class="edit" (click)="editProfile(profileDatas.user)">
+        <ion-col width-20 class="edit" (click)="editProfile(profileDatas)">
           <ion-icon name="md-create"></ion-icon>
         </ion-col>
       </ion-row>

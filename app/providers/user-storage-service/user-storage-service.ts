@@ -16,13 +16,6 @@ export class UserStorageService {
 
   }
 
-  /*setUser(datas) {
-    this.storage.set('uid', datas.uid);
-    this.storage.set('email', datas.auth.email);
-    this.storage.set('name', datas.name);
-    this.storage.set('uid', datas.auth.provider);
-  }*/
-
   setUid(uid) {
     this.storage.set('uid', uid);
   }
@@ -69,27 +62,10 @@ export class UserStorageService {
     });
   }
 
-  getUserPromise() {
-    return new Promise((resolve) => {
-
-        this.storage.get('uid').then((uid) => {
-          this.af.database.list('/users/' + uid).subscribe((snapshots) => {
-            let result = {
-              'uid' : uid,
-              user: snapshots["0"],
-              length: snapshots.length
-            }
-            resolve(result);
-          });
-        });
-    });
-  }
-
   updateUser(user, uid) {
     let key = user.$key;
     delete user.$key;
 
-    console.log(key);
     this.db = this.af.database.list('/users/' + uid);
     this.db.update(key, user).then((success) => {
         console.log('foi!');

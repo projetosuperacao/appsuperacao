@@ -16,15 +16,25 @@ import { ProfileEditPage } from '../profile-edit/profile-edit';
 export class ProfilePage {
   private home = HomePage;
   private profileDatas: any;
+  private test;
 
-  constructor(private nav: NavController, private user: UserStorageService, private auth : FirebaseAuth) {
 
+  constructor(private nav: NavController,
+    private user: UserStorageService,
+    private auth : FirebaseAuth,
+    private af: AngularFire) {
+    this.user.storage.get('uid').then((uid) => {
+      this.af.database.object('/users/' + uid).subscribe((data) => {
+        let userData = data[Object.keys(data)[0]];
+
+        this.profileDatas = userData;
+        this.profileDatas.$key = Object.keys(data)[0];
+        this.profileDatas.uid = data.$key;
+      });
+    })
   }
 
   ngOnInit() {
-    this.user.getUserPromise().then((datas) => {
-      this.profileDatas = datas;
-    })
 
   }
 
@@ -36,7 +46,6 @@ export class ProfilePage {
     let modal = Modal.create(ProfileEditPage, {'user' : user});
 
     modal.onDismiss((datas) => {
-      console.log(datas);
       this.user.updateUser(datas, this.profileDatas.uid);
     })
 
