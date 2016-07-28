@@ -1,16 +1,16 @@
 <ion-content padding class="login">
   <div class="parent">
-    <div class="logo">
+    <div [hidden]="ctrlLogo" class="logo">
       <img src="./img/logo.jpg">
     </div>
 
     <div class="form">
         <div padding>
           <ion-segment [(ngModel)]="authType" dark>
-            <ion-segment-button value="login" checked>
+            <ion-segment-button value="login" (click)="ctrlLogo = false" checked>
               Login
             </ion-segment-button>
-            <ion-segment-button value="signup">
+            <ion-segment-button value="signup" (click)="ctrlLogo = true">
               Cadastre-se
             </ion-segment-button>
           </ion-segment>
@@ -18,39 +18,58 @@
 
         <!-- =============== SINGIN =============== -->
         <div [ngSwitch]="authType">
-          <form *ngSwitchWhen="'login'" #loginCreds="ngForm" *ngSwitchDefault (ngSubmit)="login(loginCreds.value)">
+          <form *ngSwitchWhen="'login'" #loginCreds="ngForm" [ngFormModel]="formLogin" *ngSwitchDefault (ngSubmit)="login(loginCreds.value)">
             <ion-item>
-              <ion-input type="email" ngControl="email" placeholder="E-mail"></ion-input>
+              <ion-label stacked> E-mail </ion-label>
+              <ion-input type="email" ngControl="email"></ion-input>
             </ion-item>
+            <div class="error-field" *ngIf="!email.valid && email.touched"> Este campo é necessário </div>
 
             <ion-item>
-              <ion-input type="password" ngControl="password" placeholder="Senha"></ion-input>
+              <ion-label stacked> Senha </ion-label>
+              <ion-input type="password" ngControl="pass"></ion-input>
             </ion-item>
+            <div class="error-field" *ngIf="!pass.valid && pass.touched"> Este campo é necessário e deve conter 6 digitos </div>
 
             <div padding>
-              <button full dark> Login </button>
+              <button full dark [disabled]="!loginCreds.valid"> Login </button>
             </div>
           </form>
 
           <!-- =============== SINGUP =============== -->
-          <form *ngSwitchWhen="'signup'" #signupCreds="ngForm" (ngSubmit)="signup(signupCreds.value)">
+          <form *ngSwitchWhen="'signup'" #signupCreds="ngForm" [ngFormModel]="formSignup" (ngSubmit)="signup(signupCreds.value)">
             <ion-item>
-              <ion-input type="text" ngControl="name" placeholder="Nome do usuário"></ion-input>
+              <ion-label stacked> Nome </ion-label>
+              <ion-input type="text" ngControl="name"></ion-input>
             </ion-item>
-            <ion-item>
-              <ion-input type="email" ngControl="email" placeholder="E-mail"></ion-input>
-            </ion-item>
+            <div class="error-field" *ngIf="!name.valid && name.touched"> Este campo é necessário </div>
 
             <ion-item>
-              <ion-input type="password" ngControl="password" placeholder="Senha"></ion-input>
+              <ion-label stacked> E-mail </ion-label>
+              <ion-input type="email" ngControl="email"></ion-input>
             </ion-item>
+            <div class="error-field" *ngIf="!email.valid && email.touched"> Este campo é necessário </div>
 
             <ion-item>
-              <ion-input type="password" ngControl="password_confirm" placeholder="Confirmar senha"></ion-input>
+              <ion-label stacked> Data de nascimento </ion-label>
+              <ion-input type="date" ngControl="birth"></ion-input>
             </ion-item>
+            <div class="error-field" *ngIf="!birth.valid && birth.touched"> Este campo é necessário </div>
+
+            <ion-item>
+              <ion-label stacked> Senha </ion-label>
+              <ion-input type="password" ngControl="pass"></ion-input>
+            </ion-item>
+            <div class="error-field" *ngIf="!pass.valid && pass.touched"> Este campo é necessário e deve conter 6 digitos </div>
+
+            <ion-item>
+              <ion-label stacked> Confirmar senha </ion-label>
+              <ion-input type="password" ngControl="passConfirm"></ion-input>
+            </ion-item>
+            <div class="error-field" *ngIf="!passConfirm.valid && passConfirm.touched"> EEste campo é necessário e deve conter 6 digitos </div>
 
             <div padding>
-              <button full dark> Cadastre-se </button>
+              <button full dark [disabled]="!signupCreds.valid"> Cadastre-se </button>
             </div>
           </form>
         </div>

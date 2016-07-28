@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController, Alert, Modal, Loading } from 'ionic-angular';
-import { FirebaseAuth, AngularFire, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2';
+import { FirebaseAuth, AngularFire, FirebaseObjectObservable } from 'angularfire2';
 import { UserStorageService } from '../../providers/user-storage-service/user-storage-service';
 import { LoginPage } from '../login/login';
 import { HomePage } from '../home/home';
+import { SchedulePage } from '../schedule/schedule';
 import { ProfileEditPage } from '../profile-edit/profile-edit';
-
 
 @Component({
   templateUrl: 'build/pages/profile/profile.html',
@@ -26,21 +26,24 @@ export class ProfilePage {
   }
 
   ngOnInit() {
-    //this.showLoading();
-
-    this.user.storage.get('uid').then((uid) => {
-      this.af.database.object('/users/' + uid).subscribe((data) => {
-        let userData = data[Object.keys(data)[0]];
-
-        this.profileDatas = userData;
-        this.profileDatas.$key = Object.keys(data)[0];
-        this.profileDatas.uid = data.$key;
-        //this.loading.dismiss();
-
-      });
+    let loading = Loading.create({
+      content: "Aguarde..."
     })
 
-    console.log(this.profileDatas);
+    this.nav.present(loading).then(() => {
+      this.user.storage.get('uid').then((uid) => {
+        this.af.database.object('/users/' + uid).subscribe((data) => {
+
+          let userData = data[Object.keys(data)[0]];
+
+          this.profileDatas = userData;
+          this.profileDatas.$key = Object.keys(data)[0];
+          this.profileDatas.uid = data.$key;
+
+          loading.dismiss();
+        });
+      });
+    });
   }
 
   openPage(page) {
@@ -57,18 +60,14 @@ export class ProfilePage {
     this.nav.present(modal);
   }
 
+  openSchedule() {
+    this.nav.push(SchedulePage);
+  }
+
   logout() {
     this.user.clear();
     this.auth.logout();
     this.nav.setRoot(LoginPage);
-  }
-
-  showLoading() {
-    this.loading = Loading.create({
-      content: "Aguarde..."
-    })
-
-    this.nav.present(this.loading);
   }
 
 }

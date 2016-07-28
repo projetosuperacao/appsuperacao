@@ -4,7 +4,7 @@ import { HomePage } from '../home/home';
 import { ProfilePage } from '../profile/profile';
 import { FirebaseAuth, AuthProviders, AuthMethods } from 'angularfire2';
 import { UserStorageService } from '../../providers/user-storage-service/user-storage-service';
-import { FORM_DIRECTIVES } from '@angular/common';
+import { FORM_DIRECTIVES, FormBuilder, Validators, Control } from '@angular/common';
 import { Facebook, GooglePlus } from 'ionic-native';
 
 @Component({
@@ -14,15 +14,52 @@ import { Facebook, GooglePlus } from 'ionic-native';
 })
 
 // cordova plugin add cordova-plugin-facebook4 --save --variable APP_ID="1740412492881253" --variable APP_NAME="Fiap - SuperAcao"
-// ionic plugin add cordova-plugin-googleplus --variable REVERSED_CLIENT_ID=236648092205-buoo42f7tfit2ojq3bf1jjcmnrgjchg3.apps.googleusercontent.com
+// cordova plugin add cordova-plugin-googleplus --save --variable REVERSED_CLIENT_ID=236648092205-27k2rhv4oir4m98r1qiaqjl04q6k9ai2.apps.googleusercontent.com
 // SHA1 - 4D:FE:9A:38:FD:2F:67:3D:95:C5:1F:BD:AE:25:E8:74:5C:67:ED:7C - keystore
 
 export class LoginPage {
   private loading: Loading;
   private page;
   private messages;
+  private ctrlLogo = false;
 
-  constructor(private nav: NavController, private auth: FirebaseAuth, private user: UserStorageService, private plataform: Platform) {
+  // --- FORM DATAS -----
+  private formSignup;
+  private formLogin;
+
+  private name : Control;
+  private email : Control;
+  private birth: Control;
+  private pass : Control;
+  private passConfirm : Control;
+
+  constructor(private nav : NavController,
+   private auth : FirebaseAuth,
+   private user : UserStorageService,
+   private plataform : Platform,
+   private fb : FormBuilder) {
+
+  // ===== Validators ======
+  this.name = new Control("", Validators.required);
+  this.birth = new Control("", Validators.required);
+  this.email = new Control("", Validators.required);
+  this.pass = new Control("", Validators.compose([Validators.required, Validators.minLength(6)]) );
+  this.passConfirm = new Control("", Validators.compose([Validators.required, Validators.minLength(6)]));
+
+  this.formSignup = this.fb.group({
+    name: this.name,
+    email: this.email,
+    birth: this.birth,
+    pass: this.pass,
+    passConfirm: this.passConfirm
+  });
+
+  this.formLogin = this.fb.group({
+    email: this.email,
+    pass: this.pass
+  })
+
+
     this.page = ProfilePage;
     this.messages = {
       email_already : "auth/email-already-in-use",
@@ -42,12 +79,16 @@ export class LoginPage {
       return;
     }
 
-    this.auth.createUser(credentials).then((authData) => {
+    this.auth.createUser({
+      email: credentials.email,
+      password: credentials.pass
+    }).then((authData) => {
       this.loading.dismiss();
 
       // === Register user  ===
       this.user.registerUser({
         name: credentials.name,
+        birth: credentials.birth,
         provider: authData.provider,
         uid: authData.uid,
         email: credentials.email});
@@ -73,19 +114,22 @@ export class LoginPage {
 
   // ===================================== LOGIN ===================================
   login(credentials) {
+    console.log(credentials);
     this.showLoading();
 
-    if(!credentials.email || !credentials.password) {
+    if(!credentials.email || !credentials.pass) {
       this.showError("Digite todos os campos");
       return;
     }
 
-    this.auth.login(credentials, {
+    this.auth.login({
+      email: credentials.email,
+      password: credentials.pass
+    }, {
       provider: AuthProviders.Password,
       method: AuthMethods.Password
     }).then((authData) => {
         // === Set Storage ===
-        //this.user.setUser(authData);
         this.user.setUid(authData.uid);
 
         this.loading.dismiss();
@@ -98,9 +142,9 @@ export class LoginPage {
         } else if (this.messages.email_not_found === error.code) {
           this.showError("Este e-mail não está cadastrado!")
         }
+
         console.log(error);
     })
-
   }
 
   // ===================================== LOGIN FACEBOOK ===================================
@@ -141,6 +185,7 @@ export class LoginPage {
   // ===================================== LOGIN GOOGLEPLUS ===================================
   loginGoogle() {
     this.showLoading();
+
     GooglePlus.login({}).then((success) => {
       console.log(success);
       let creds = (firebase.auth.GoogleAuthProvider as any).credential(success.authResponse.accessToken)
@@ -194,11 +239,11 @@ export class LoginPage {
   }
 
   _validateForm(credentials) : any {
-    if(!credentials.email || !credentials.password || !credentials.password_confirm) {
+    if(!credentials.email || !credentials.pass || !credentials.passConfirm) {
       return 'Preencha todos os campos';
     }
 
-    if(!(credentials.password === credentials.password_confirm)) {
+    if(!(credentials.pass === credentials.passConfirm)) {
       return 'As senhas digitadas não são iguais';
     }
 

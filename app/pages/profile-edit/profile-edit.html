@@ -14,12 +14,41 @@
       <ion-input type="text" ngControl="name"></ion-input>
     </ion-item>
 
-    <div class="error-field" *ngIf="!name.valid"> Este campo é necessário </div>
+    <ion-item>
+      <ion-label stacked> Contato </ion-label>
+      <ion-input type="text"></ion-input>
+    </ion-item>
 
     <ion-item>
-      <ion-label stacked> Data de nascimento </ion-label>
-      <ion-input type="date" ngControl="birth"></ion-input>
+      <ion-label stacked> Estado civil </ion-label>
+      <ion-select>
+        <ion-option value=""> Casado </ion-option>
+        <ion-option value=""> Divorciado </ion-option>
+        <ion-option value=""> Viúvo </ion-option>
+        <ion-option value=""> Separado </ion-option>
+      </ion-select>
     </ion-item>
+
+    <ion-item>
+      <ion-label stacked> Tipo do cancer </ion-label>
+      <ion-select>
+        <ion-option value="" checked="true"> Opções.... </ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label stacked> Religião </ion-label>
+      <ion-select>
+        <ion-option value="Catolico"> Catolico </ion-option>
+        <ion-option value="Protestante"> Protestante </ion-option>
+        <ion-option value="Budista"> Budista </ion-option>
+        <ion-option value="Ateu"> Ateu </ion-option>
+      </ion-select>
+    </ion-item>
+
+
+
+    <div class="error-field" *ngIf="!name.valid"> Este campo é necessário </div>
 
     <ion-item>
       <ion-label stacked> Tipo do usuário </ion-label>

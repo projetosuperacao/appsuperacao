@@ -39,8 +39,8 @@
         <variable name="APP_NAME" value="Fiap - SuperAcao" />
     </plugin>
     <plugin name="cordova-plugin-inappbrowser" spec="~1.1.1" />
-    <plugin name="cordova-plugin-googleplus" spec="https://github.com/EddyVerbruggen/cordova-plugin-googleplus">
-        <variable name="REVERSED_CLIENT_ID" value="236648092205-buoo42f7tfit2ojq3bf1jjcmnrgjchg3.apps.googleusercontent.com" />
-    </plugin>
     <plugin name="cordova-plugin-crop" spec="~0.1.0" />
+    <plugin name="cordova-plugin-googleplus" spec="https://github.com/EddyVerbruggen/cordova-plugin-googleplus">
+        <variable name="REVERSED_CLIENT_ID" value="236648092205-27k2rhv4oir4m98r1qiaqjl04q6k9ai2.apps.googleusercontent.com" />
+    </plugin>
 </widget>
