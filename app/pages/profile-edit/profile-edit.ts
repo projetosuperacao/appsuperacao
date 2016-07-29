@@ -36,6 +36,10 @@ export class ProfileEditPage {
     this.form = this.fb.group({
       name : this.name,
       birth: this.birth,
+      address : [this.user.address],
+      phone: [this.user.phone],
+      religion: [this.user.religion],
+      civilState: [this.user.civilState],
       type_user : this.type_user
     })
   }
@@ -52,7 +56,6 @@ export class ProfileEditPage {
 
       datas.value.avatar = this.photo;
       datas.value.back_img = this.backgroundImg;
-
       this.view.dismiss(datas.value);
     }
   }
@@ -88,6 +91,7 @@ export class ProfileEditPage {
 
   openBackground() {
     this.showLoading();
+
     let options = {
         quality: 50,
         destinationType: Camera.DestinationType.FILE_URI,
@@ -103,6 +107,7 @@ export class ProfileEditPage {
       }).then((newPath) => {
         this.toBase64(newPath).then((base64Img) => {
           this.backgroundImg = base64Img;
+          console.log(base64Img);
           this.loading.dismiss();
         });
       }).catch((error) => {

@@ -15,17 +15,23 @@
     </ion-item>
 
     <ion-item>
+      <ion-label stacked> Endereço </ion-label>
+      <ion-input type="text" ngControl="address"></ion-input>
+    </ion-item>
+
+    <ion-item>
       <ion-label stacked> Contato </ion-label>
-      <ion-input type="text"></ion-input>
+      <ion-input type="text" ngControl="phone"></ion-input>
     </ion-item>
 
     <ion-item>
       <ion-label stacked> Estado civil </ion-label>
-      <ion-select>
-        <ion-option value=""> Casado </ion-option>
-        <ion-option value=""> Divorciado </ion-option>
-        <ion-option value=""> Viúvo </ion-option>
-        <ion-option value=""> Separado </ion-option>
+      <ion-select ngControl="civilState">
+        <ion-option value="Solteiro"> Solteiro </ion-option>
+        <ion-option value="Casado"> Casado </ion-option>
+        <ion-option value="Divorciado"> Divorciado </ion-option>
+        <ion-option value="Viúvo"> Viúvo </ion-option>
+        <ion-option value="Separado"> Separado </ion-option>
       </ion-select>
     </ion-item>
 
@@ -38,7 +44,7 @@
 
     <ion-item>
       <ion-label stacked> Religião </ion-label>
-      <ion-select>
+      <ion-select ngControl="religion">
         <ion-option value="Catolico"> Catolico </ion-option>
         <ion-option value="Protestante"> Protestante </ion-option>
         <ion-option value="Budista"> Budista </ion-option>

@@ -1,19 +1,43 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, Modal } from 'ionic-angular';
+import { DateFilter } from '../components/date-filter';
+import { ScheduleEditPage } from '../schedule-edit/schedule-edit';
 
-/*
-  Generated class for the SchedulePage page.
-
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
-*/
 @Component({
   templateUrl: 'build/pages/schedule/schedule.html',
+  directives: [DateFilter]
 })
+
 export class SchedulePage {
 
-  constructor(private nav: NavController) {
+  private dateFilter: Date;
 
+  constructor(private nav: NavController) {
+    this.dateFilter = new Date();
+  }
+
+  updateMonth(data : Date) {
+    console.log(data);
+  }
+
+  addSchedule() {
+    let modal = Modal.create(ScheduleEditPage);
+
+    modal.onDismiss(() => {
+
+    });
+
+    this.nav.present(modal);
+  }
+
+  editSchedule() {
+    let modal = Modal.create(ScheduleEditPage);
+
+    modal.onDismiss(() => {
+
+    });
+
+    this.nav.present(modal);
   }
 
 }

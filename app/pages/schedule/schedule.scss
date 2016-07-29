@@ -2,5 +2,13 @@
   .months {
     text-align: center;
     color: #9170b1;
+
+    .arrow-left {
+      float: left;
+    }
+
+    .arrow-right {
+      float: right;
+    }
   }
 }

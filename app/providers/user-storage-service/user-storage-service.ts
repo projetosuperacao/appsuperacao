@@ -1,7 +1,8 @@
 import { Injectable, OnInit } from '@angular/core';
-import { Storage, LocalStorage } from 'ionic-angular';
+import { Storage, LocalStorage, Loading } from 'ionic-angular';
 import { AngularFire, FirebaseListObservable } from 'angularfire2';
 import 'rxjs/add/operator/map';
+
 
 
 @Injectable()
@@ -31,12 +32,12 @@ export class UserStorageService {
       result.email = result.auth.email;
     }
 
-    console.log(result.name);
 
     let data = {
       provider : result.provider,
-      name : result.name || null,
+      name : result.name,
       email: result.email || null,
+      birth: result.birth,
       avatar: result.photoURL || null,
       type_user: "Superador"
     }

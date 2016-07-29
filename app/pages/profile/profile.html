@@ -22,8 +22,8 @@
           <p> {{ profileDatas?.type_user }}</p>
         </ion-col>
 
-        <ion-col width-20 class="edit" (click)="editProfile(profileDatas)">
-          <ion-icon name="md-create"></ion-icon>
+        <ion-col width-20 class="edit">
+          <button class="edit" clear round (click)="editProfile(profileDatas)"> <ion-icon name="md-create"> </ion-icon> </button>
         </ion-col>
       </ion-row>
 
@@ -57,8 +57,13 @@
     </ion-row>
 
     <ion-row class="buttons">
-      <ion-col width-50> <ion-icon name="add-circle"></ion-icon> Criar evento  </ion-col>
-      <ion-col width-50 (click)="openSchedule()"> <ion-icon name="md-list-box"></ion-icon> Listar eventos  </ion-col>
+      <ion-col width-50>
+        <div class="buttons" (click)="addSchedule()"> <ion-icon name="add-circle"></ion-icon> Criar evento </div>
+      </ion-col>
+
+      <ion-col width-50>
+        <div class="buttons" (click)="openSchedule()"> <ion-icon name="md-list-box"></ion-icon> Listar eventos </div>
+      </ion-col>
     </ion-row>
 
   </ion-card>

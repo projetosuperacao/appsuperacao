@@ -1,0 +1,40 @@
+
+<ion-header>
+
+  <ion-navbar dark>
+    <ion-title> Evento </ion-title>
+    <ion-buttons start>
+      <button (click)="close()"> <ion-icon name="close"> </ion-icon> </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <form  #formSchedule="ngForm" [ngFormModel]="form" (ngSubmit)="send(formSchedule.value)">
+  <ion-item>
+    <ion-label stacked> Nome do evento </ion-label>
+    <ion-input type="text" ngControl="title"> </ion-input>
+  </ion-item>
+  <div class="error-field" *ngIf="!titleForm.valid && titleForm.touched"> Este campo é obrigatorio </div>
+
+  <ion-item>
+    <ion-label stacked> Data do evento </ion-label>
+    <ion-input type="date" ngControl="date"> </ion-input>
+  </ion-item>
+  <div class="error-field" *ngIf="!dateForm.valid && dateForm.touched"> Este campo é obrigatorio </div>
+
+  <ion-item>
+    <ion-label stacked> Local / Endereço </ion-label>
+    <ion-input type="text" ngControl="local"> </ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label stacked> Descrição </ion-label>
+    <ion-textarea ngControl="description"> </ion-textarea>
+  </ion-item>
+
+  <button [disabled]="!formSchedule.valid" full dark> Enviar </button>
+  </form>
+</ion-content>

@@ -6,6 +6,7 @@ import { LoginPage } from '../login/login';
 import { HomePage } from '../home/home';
 import { SchedulePage } from '../schedule/schedule';
 import { ProfileEditPage } from '../profile-edit/profile-edit';
+import { ScheduleEditPage } from '../schedule-edit/schedule-edit';
 
 @Component({
   templateUrl: 'build/pages/profile/profile.html',
@@ -54,14 +55,28 @@ export class ProfilePage {
     let modal = Modal.create(ProfileEditPage, {'user' : user});
 
     modal.onDismiss((datas) => {
+      if(!datas) {
+        return;
+      }
+
       this.user.updateUser(datas, this.profileDatas.uid);
-    })
+    });
 
     this.nav.present(modal);
   }
 
   openSchedule() {
     this.nav.push(SchedulePage);
+  }
+
+  addSchedule() {
+    let modal = Modal.create(ScheduleEditPage);
+
+    modal.onDismiss(() => {
+
+    });
+
+    this.nav.present(modal);
   }
 
   logout() {

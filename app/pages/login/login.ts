@@ -61,6 +61,7 @@ export class LoginPage {
 
 
     this.page = ProfilePage;
+
     this.messages = {
       email_already : "auth/email-already-in-use",
       email_invalid : "auth/invalid-email",
@@ -95,14 +96,14 @@ export class LoginPage {
 
       let prompt = Alert.create({
         title: "Sucesso!",
-        subTitle: "Sua conta foi criada com sucesso!",
+        subTitle: "Sua conta foi criada com sucesso! Realize o login!",
         buttons: ['Ok']
       });
 
       this.nav.present(prompt);
     }).catch((error: any) => {
       if(this.messages.email_already === error.code) {
-        this.showError("E-mail já cadastrado");
+        this.showError("Usuário já cadastrado");
       } else if (this.messages.weak_password === error.code){
         this.showError("A senha deve conter no minimo 6 digitos");
       } else if (this.messages.email_invalid === error.code) {
@@ -114,7 +115,6 @@ export class LoginPage {
 
   // ===================================== LOGIN ===================================
   login(credentials) {
-    console.log(credentials);
     this.showLoading();
 
     if(!credentials.email || !credentials.pass) {
@@ -140,7 +140,7 @@ export class LoginPage {
         } else if (this.messages.password_wrong === error.code) {
           this.showError("Senha incorreta!");
         } else if (this.messages.email_not_found === error.code) {
-          this.showError("Este e-mail não está cadastrado!")
+          this.showError("Esta não está cadastrado!")
         }
 
         console.log(error);
@@ -166,7 +166,7 @@ export class LoginPage {
           this._validateLoginSocial(authData);
 
           this.loading.dismiss();
-          this.nav.setRoot(HomePage);
+          this.nav.setRoot(this.page);
 
         }).catch((error) => {
           console.log(error);
@@ -219,8 +219,10 @@ export class LoginPage {
   // ===================================== OTHERS METHODS ===================================
   showLoading() {
     this.loading = Loading.create({
-      content: "Aguarde..."
+      content: "Aguarde...",
+      dismissOnPageChange: true
     });
+
     this.nav.present(this.loading);
   }
 
