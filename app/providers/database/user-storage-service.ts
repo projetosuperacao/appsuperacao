@@ -50,15 +50,21 @@ export class UserStorageService {
     });
   }
 
-  getUser(callBack) {
-    this.storage.get('uid').then((uid) => {
-        this.af.database.list('/users/' + uid).subscribe((snapshots) => {
-        let result = {
-          'uid' : uid,
-          user: snapshots["0"],
-          length: snapshots.length
-        }
-        callBack(result);
+
+  getUser() {
+    let user: any;
+
+    return new Promise((resolve) => {
+      this.storage.get('uid').then((uid) => {
+          this.af.database.object('/users/' + uid).subscribe((data) => {
+              let userData = data[Object.keys(data)[0]];
+
+              user = userData;
+              user.uid = data.$key;
+              user.$key = Object.keys(data)[0];
+
+              resolve(user);
+          });
       });
     });
   }

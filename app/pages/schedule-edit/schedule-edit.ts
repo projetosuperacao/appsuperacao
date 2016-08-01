@@ -12,8 +12,11 @@ export class ScheduleEditPage {
 
   private titleForm : Control;
   private dateForm : Control;
+  private timeForm : Control;
   private localForm : Control;
   private descripForm : Control;
+  private privacityForm : Control;
+
   constructor(private nav: NavController,
   private view: ViewController,
   private fb: FormBuilder,
@@ -21,20 +24,24 @@ export class ScheduleEditPage {
 
     this.titleForm = new Control("", Validators.required);
     this.dateForm = new Control("", Validators.required);
+    this.timeForm = new Control("", Validators.required);
     this.localForm = new Control("");
     this.descripForm = new Control("");
+    this.privacityForm = new Control(false);
 
     this.form = this.fb.group({
       title: this.titleForm,
       date: this.dateForm,
+      time: this.timeForm,
       local: this.localForm,
-      description: this.descripForm
+      description: this.descripForm,
+      privacity: this.privacityForm
     })
 
   }
 
   send(datas) {
-    console.log(datas);
+    this.view.dismiss(datas);
   }
 
   close() {

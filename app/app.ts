@@ -7,7 +7,7 @@ import {ProfilePage} from './pages/profile/profile';
 import {LoginPage} from './pages/login/login';
 import {FIREBASE_PROVIDERS,
   defaultFirebase, AngularFire, AuthMethods, AuthProviders, firebaseAuthConfig, FirebaseAuth} from 'angularfire2';
-import {UserStorageService} from './providers/user-storage-service/user-storage-service';
+import {UserStorageService} from './providers/database/user-storage-service';
 
 
 @Component({

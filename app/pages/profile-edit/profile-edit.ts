@@ -111,13 +111,13 @@ export class ProfileEditPage {
           this.loading.dismiss();
         });
       }).catch((error) => {
-        console.log("Fail!!" + error);
+        console.log("Fail!!" + JSON.stringify(error));
         this.loading.dismiss();
       });;
 
     }).catch((error) => {
       this.loading.dismiss();
-      console.log("Fail!! " + error);
+      console.log("Fail!! " + JSON.stringify(error));
     })
   }
 

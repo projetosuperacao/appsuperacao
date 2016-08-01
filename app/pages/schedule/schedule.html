@@ -9,19 +9,19 @@
   <date-filter [startDate]="dateFilter" (changeMonth)="updateMonth($event)"> </date-filter>
 
   <ion-list>
-    <ion-item-sliding>
+    <ion-item-sliding *ngFor="let event of events">
       <ion-item (click)="editSchedule()">
         <ion-row>
           <ion-col width-25>
-            <h1> 22 </h1>
-            <p> Sexta </p>
+            <h1> {{ event.date | date:'d' }} </h1>
+            <p>  {{ event.date | date:'E' }} </p>
             <p> 13:00 </p>
           </ion-col>
 
           <ion-col width-75>
-            <h2> Titulo do evento </h2>
-            <p class="content"> Lorem ipsum dolor sit amet, consectetur adipiscing elit. </p>
-            <p class="location"> Av. Lins de vasconcelis </p>
+            <h2> {{ event.title }} </h2>
+            <p class="content"> {{ event.description }} </p>
+            <p class="location"> {{ event.local }} </p>
            </ion-col>
         </ion-row>
       </ion-item>

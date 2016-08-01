@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController, Alert, Modal, Loading } from 'ionic-angular';
 import { FirebaseAuth, AngularFire, FirebaseObjectObservable } from 'angularfire2';
-import { UserStorageService } from '../../providers/user-storage-service/user-storage-service';
+import { UserStorageService } from '../../providers/database/user-storage-service';
+import { ScheduleStorageService } from '../../providers/database/schedule-storage-service';
 import { LoginPage } from '../login/login';
 import { HomePage } from '../home/home';
 import { SchedulePage } from '../schedule/schedule';
@@ -10,7 +11,7 @@ import { ScheduleEditPage } from '../schedule-edit/schedule-edit';
 
 @Component({
   templateUrl: 'build/pages/profile/profile.html',
-  providers: [UserStorageService]
+  providers: [UserStorageService, ScheduleStorageService]
 
 })
 
@@ -21,30 +22,14 @@ export class ProfilePage {
 
   constructor(private nav: NavController,
     private user: UserStorageService,
+    private schedule : ScheduleStorageService,
     private auth : FirebaseAuth,
     private af: AngularFire) {
 
   }
 
   ngOnInit() {
-    let loading = Loading.create({
-      content: "Aguarde..."
-    })
-
-    this.nav.present(loading).then(() => {
-      this.user.storage.get('uid').then((uid) => {
-        this.af.database.object('/users/' + uid).subscribe((data) => {
-
-          let userData = data[Object.keys(data)[0]];
-
-          this.profileDatas = userData;
-          this.profileDatas.$key = Object.keys(data)[0];
-          this.profileDatas.uid = data.$key;
-
-          loading.dismiss();
-        });
-      });
-    });
+    this._updateDatas();
   }
 
   openPage(page) {
@@ -60,6 +45,7 @@ export class ProfilePage {
       }
 
       this.user.updateUser(datas, this.profileDatas.uid);
+      this._updateDatas();
     });
 
     this.nav.present(modal);
@@ -72,11 +58,29 @@ export class ProfilePage {
   addSchedule() {
     let modal = Modal.create(ScheduleEditPage);
 
-    modal.onDismiss(() => {
+    modal.onDismiss((datas) => {
+      if(!datas) {
+        return;
+      }
 
+      this.schedule.insertEvent(datas);
+      console.log('foi!');
     });
 
     this.nav.present(modal);
+  }
+
+  _updateDatas() {
+    let loading = Loading.create({
+      content: "Aguarde..."
+    })
+
+    this.nav.present(loading).then(() => {
+      this.user.getUser().then((user) => {
+        this.profileDatas = user;
+        loading.dismiss();
+      })
+    })
   }
 
   logout() {
@@ -84,5 +88,7 @@ export class ProfilePage {
     this.auth.logout();
     this.nav.setRoot(LoginPage);
   }
+
+
 
 }

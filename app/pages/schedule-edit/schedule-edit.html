@@ -26,6 +26,17 @@
   <div class="error-field" *ngIf="!dateForm.valid && dateForm.touched"> Este campo é obrigatorio </div>
 
   <ion-item>
+    <ion-label stacked> Horario do evento </ion-label>
+    <ion-datetime displayFormat="H:mm " pickerFormat="H:mm" ngControl="time"> </ion-datetime>
+  </ion-item>
+  <div class="error-field" *ngIf="!dateForm.valid && dateForm.touched"> Este campo é obrigatorio </div>
+
+  <ion-item>
+     <ion-label> Privado </ion-label>
+     <ion-toggle checked="false" ngControl="privacity"> </ion-toggle>
+  </ion-item>
+
+  <ion-item>
     <ion-label stacked> Local / Endereço </ion-label>
     <ion-input type="text" ngControl="local"> </ion-input>
   </ion-item>

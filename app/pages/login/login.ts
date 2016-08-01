@@ -3,7 +3,7 @@ import { NavController, Alert, Loading, Platform } from 'ionic-angular';
 import { HomePage } from '../home/home';
 import { ProfilePage } from '../profile/profile';
 import { FirebaseAuth, AuthProviders, AuthMethods } from 'angularfire2';
-import { UserStorageService } from '../../providers/user-storage-service/user-storage-service';
+import { UserStorageService } from '../../providers/database/user-storage-service';
 import { FORM_DIRECTIVES, FormBuilder, Validators, Control } from '@angular/common';
 import { Facebook, GooglePlus } from 'ionic-native';
 
@@ -14,7 +14,7 @@ import { Facebook, GooglePlus } from 'ionic-native';
 })
 
 // cordova plugin add cordova-plugin-facebook4 --save --variable APP_ID="1740412492881253" --variable APP_NAME="Fiap - SuperAcao"
-// cordova plugin add cordova-plugin-googleplus --save --variable REVERSED_CLIENT_ID=236648092205-27k2rhv4oir4m98r1qiaqjl04q6k9ai2.apps.googleusercontent.com
+// ionic plugin add cordova-plugin-googleplus --save --variable REVERSED_CLIENT_ID=236648092205-buoo42f7tfit2ojq3bf1jjcmnrgjchg3.apps.googleusercontent.com
 // SHA1 - 4D:FE:9A:38:FD:2F:67:3D:95:C5:1F:BD:AE:25:E8:74:5C:67:ED:7C - keystore
 
 export class LoginPage {
@@ -253,10 +253,10 @@ export class LoginPage {
   }
 
   _validateLoginSocial(authData) {
-    this.user.getUser((datas) => {
-      if(!datas.length) {
+    this.user.getUser().then((user: any) => {
+      if(!user.length) {
         this.user.registerUser(authData);
-        return;
+        return
       }
     });
   }
