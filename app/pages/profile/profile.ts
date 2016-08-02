@@ -64,7 +64,7 @@ export class ProfilePage {
       }
 
       this.schedule.insertEvent(datas);
-      console.log('foi!');
+      this.nav.push(SchedulePage);
     });
 
     this.nav.present(modal);

@@ -1,30 +1,35 @@
 import { Component } from '@angular/core';
-import { NavController, Modal } from 'ionic-angular';
+import { NavController, Modal, Loading, Alert } from 'ionic-angular';
 import { DateFilter } from '../components/date-filter';
 import { ScheduleEditPage } from '../schedule-edit/schedule-edit';
 import { ScheduleStorageService } from '../../providers/database/schedule-storage-service';
+import { FirebaseListObservable } from 'angularfire2';
+import { DateUtil } from '../../providers/util/date-util';
 
 @Component({
   templateUrl: 'build/pages/schedule/schedule.html',
   directives: [DateFilter],
-  providers: [ScheduleStorageService]
+  providers: [ScheduleStorageService, DateUtil]
 })
 
 export class SchedulePage {
 
   private dateFilter: Date;
-  private events;
+  private events : FirebaseListObservable<any>;
+  private test;
 
-  constructor(private nav: NavController, private schedule: ScheduleStorageService) {
+  constructor(
+    private nav: NavController,
+    private schedule: ScheduleStorageService,
+    private dateUtil: DateUtil) {
+
     this.dateFilter = new Date();
-
-    this.schedule.getEvents().then((datas) => {
-      this.events = datas;
-    })
+    this.test = new Date('2016-08-01');
   }
 
-  updateMonth(data : Date) {
-    console.log(data);
+  updateMonth(date : Date) {
+    this.dateFilter = date;
+    this._updateDatas();
   }
 
   addSchedule() {
@@ -35,14 +40,16 @@ export class SchedulePage {
         console.log(datas);
         return;
       }
+
       this.schedule.insertEvent(datas);
+      this._updateDatas();
     });
 
     this.nav.present(modal);
   }
 
-  editSchedule() {
-    let modal = Modal.create(ScheduleEditPage);
+  editSchedule(event) {
+    let modal = Modal.create(ScheduleEditPage, {'event': event});
 
     modal.onDismiss((datas) => {
       if(!datas) {
@@ -50,10 +57,58 @@ export class SchedulePage {
         return;
       }
 
-      console.log(datas);
+      this.schedule.updateEvent(datas);
+      this._updateDatas();
     });
 
     this.nav.present(modal);
+  }
+
+  removeSchedule(datas) {
+    let alert = Alert.create({
+      title: 'Excluir ' + datas.title,
+      message: 'Você deseja excluir este evento ?',
+      buttons: [
+        {
+          text: 'Sim',
+          handler: () => {
+            this.schedule.removeEvent(datas);
+            this._updateDatas();
+          }
+        },
+        {
+          text: 'Não',
+          handler: () => {
+
+          }
+        }
+      ]
+    })
+
+    this.nav.present(alert);
+
+  }
+
+  _updateDatas() {
+    let firstDay = this.dateUtil.getFirstDay(this.dateFilter);
+    let lastDay = this.dateUtil.getLastDay(this.dateFilter);
+
+    console.log(this.dateFilter);
+
+    console.log(firstDay);
+    console.log(lastDay);
+
+    let loading = Loading.create({
+      content: "Aguarde..."
+    });
+
+
+    this.nav.present(loading).then(() => {
+      this.schedule.getEventsDate(firstDay, lastDay).then((datas : FirebaseListObservable<any>) => {
+        this.events = datas;
+        loading.dismiss();
+      })
+    });
   }
 
 }

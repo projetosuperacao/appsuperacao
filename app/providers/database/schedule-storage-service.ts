@@ -24,12 +24,35 @@ export class ScheduleStorageService {
     this.schedule.push(datas);
   }
 
+  updateEvent(datas) {
+    let key = datas.$key;
+    delete datas.$key;
+
+    this.schedule.update(key, datas);
+  }
+
+  removeEvent(datas) {
+    this.schedule.remove(datas.$key);
+  }
+
+  getEventsDate(firstDay, lastDay) {
+    return new Promise((resolve) => {
+      this.storage.get('uid').then((uid) => {
+        resolve(this.af.database.list('/schedule/' + uid, {
+          query: {
+            orderByChild: 'date',
+            startAt: firstDay,
+            endAt: lastDay
+          }
+        }))
+      })
+    })
+  }
+
   getEvents() {
     return new Promise((resolve) => {
       this.storage.get('uid').then((uid) => {
-        this.af.database.list('/schedule/' + uid).subscribe((snapshots) => {
-          resolve(snapshots);
-        });
+        resolve(this.af.database.list('/schedule/' + uid));
       })
     })
   }

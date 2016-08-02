@@ -1,7 +1,6 @@
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { IONIC_DIRECTIVES } from 'ionic-angular/config/directives';
-import { DateUtil } from '../../providers/date-util/date-util';
-
+import { DateUtil } from '../../providers/util/date-util';
 
 @Component({
   selector: 'date-filter',
@@ -15,7 +14,7 @@ import { DateUtil } from '../../providers/date-util/date-util';
       <button class="arrow-left" dark clear round (click)="previousMonth()"> <ion-icon name="arrow-dropleft-circle"> </ion-icon> </button>
      </ion-col>
 
-    <ion-col width-80> <h2> {{ monthShow }}</h2> </ion-col>
+    <ion-col width-80> <h2> {{ dateShow }}</h2> </ion-col>
 
     <ion-col width-10>
       <button class="arrow-right" dark clear round (click)="nextMonth()"> <ion-icon name="arrow-dropright-circle"> </ion-icon> </button>
@@ -25,7 +24,7 @@ import { DateUtil } from '../../providers/date-util/date-util';
 })
 
 export class DateFilter {
-  private monthShow;
+  private dateShow;
   private startDate;
   private changeMonth;
 
@@ -38,7 +37,8 @@ export class DateFilter {
   }
 
   _updateMonth() {
-    this.monthShow = this.dateUtil.getMonthName(this.startDate) + " - " + this.startDate.getFullYear();
+    this.dateShow = this.dateUtil.getMonthName(this.startDate) + " - " + this.startDate.getFullYear();
+    this.dateUtil.formatDate(this.startDate);
     this._executeChangeMonth();
   }
 

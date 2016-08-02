@@ -9,13 +9,13 @@
   <date-filter [startDate]="dateFilter" (changeMonth)="updateMonth($event)"> </date-filter>
 
   <ion-list>
-    <ion-item-sliding *ngFor="let event of events">
-      <ion-item (click)="editSchedule()">
+    <ion-item-sliding *ngFor="let event of events | async">
+      <ion-item (click)="editSchedule(event)">
         <ion-row>
           <ion-col width-25>
-            <h1> {{ event.date | date:'d' }} </h1>
+            <h1> {{ event.date | date:'dd' }} </h1>
             <p>  {{ event.date | date:'E' }} </p>
-            <p> 13:00 </p>
+            <p>  {{ event.date | date:'H:mm' }}</p>
           </ion-col>
 
           <ion-col width-75>
@@ -27,7 +27,7 @@
       </ion-item>
 
       <ion-item-options side="right">
-        <button danger> <ion-icon name="trash"> </ion-icon> </button>
+        <button danger (click)="removeSchedule(event)"> <ion-icon name="trash"> </ion-icon> </button>
       </ion-item-options>
 
     </ion-item-sliding>
