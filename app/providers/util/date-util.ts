@@ -7,7 +7,7 @@ export class DateUtil {
   parseDate(date, time) {
     let partsDate = date.split("-");
     let partsTime = time.split(":");
-    let result = new Date(partsDate[0], partsDate[1], partsDate[2], partsTime[0], partsTime[1]);
+    let result = new Date(partsDate[0], (partsDate[1] - 1), partsDate[2], partsTime[0], partsTime[1]);
     return result.getTime();
   }
 
@@ -16,7 +16,7 @@ export class DateUtil {
     let start = "00";
 
     let year = date.getFullYear();
-    let month = (start + date.getMonth()).slice(-start.length);
+    let month = (start + (date.getMonth() +1)).slice(-start.length);
     let day = (start + date.getDate()).slice(-start.length);
 
     return year + "-" + month  + "-" + day;

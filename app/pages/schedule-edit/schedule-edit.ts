@@ -59,13 +59,19 @@ export class ScheduleEditPage {
   }
 
   send(datas) {
-    this.view.dismiss({
+    let result : any = {
       title: datas.title,
       date: this.dateUtil.parseDate(datas.date, datas.time),
       local: datas.local,
       description: datas.description,
       privacity: datas.privacity
-    });
+    }
+
+    if(this.event) {
+      result.$key = this.event.$key;
+    }
+
+    this.view.dismiss(result);
   }
 
   close() {

@@ -57,7 +57,8 @@
     "cordova-plugin-camera",
     "cordova-plugin-crop@~0.1.0",
     "cordova-plugin-googleplus@~4.0.8",
-    "cordova-plugin-crop"
+    "cordova-plugin-crop",
+    "phonegap-plugin-push"
   ],
   "cordovaPlatforms": []
 }

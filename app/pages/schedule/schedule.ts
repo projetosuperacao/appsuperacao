@@ -5,11 +5,14 @@ import { ScheduleEditPage } from '../schedule-edit/schedule-edit';
 import { ScheduleStorageService } from '../../providers/database/schedule-storage-service';
 import { FirebaseListObservable } from 'angularfire2';
 import { DateUtil } from '../../providers/util/date-util';
+import { DateCustomPipe } from '../../pipes/date-custom-pipe';
+import { TruncatePipe } from '../../pipes/truncate-pipe';
 
 @Component({
   templateUrl: 'build/pages/schedule/schedule.html',
   directives: [DateFilter],
-  providers: [ScheduleStorageService, DateUtil]
+  providers: [ScheduleStorageService, DateUtil],
+  pipes: [DateCustomPipe, TruncatePipe]
 })
 
 export class SchedulePage {
@@ -24,7 +27,6 @@ export class SchedulePage {
     private dateUtil: DateUtil) {
 
     this.dateFilter = new Date();
-    this.test = new Date('2016-08-01');
   }
 
   updateMonth(date : Date) {
@@ -92,11 +94,6 @@ export class SchedulePage {
   _updateDatas() {
     let firstDay = this.dateUtil.getFirstDay(this.dateFilter);
     let lastDay = this.dateUtil.getLastDay(this.dateFilter);
-
-    console.log(this.dateFilter);
-
-    console.log(firstDay);
-    console.log(lastDay);
 
     let loading = Loading.create({
       content: "Aguarde..."

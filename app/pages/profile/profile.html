@@ -42,17 +42,17 @@
     </ion-card-header>
 
     <ion-row class="calendar">
-      <ion-col width-25 class="dates">
-        <h1> 29 </h1>
-        <p class="content"> Janeiro </p>
-        <p class="content"> Sexta </p>
-        <p class="content"> 9:30 </p>
+      <ion-col width-27 class="dates">
+        <h1> {{ showSchedule?.date | date:'dd' }} </h1>
+        <p class="content"> {{ showSchedule?.date | customDate:'m' }} </p>
+        <p class="content"> {{ showSchedule?.date | customDate:'d' }}</p>
+        <p class="content"> {{ showSchedule?.date | date:'HH:mm' }} </p>
       </ion-col>
 
-      <ion-col width-75>
-        <h2> Titulo do evento </h2>
-        <p class="content"> Lorem ipsum dolor sit amet, consectetur adipiscing elit. </p>
-        <p class="location"> Av. Lins de vasconcelis </p>
+      <ion-col width-73>
+        <h2> {{ showSchedule?.title }} </h2>
+        <p class="content"> {{ showSchedule?.description  }} </p>
+        <p class="location"> {{ showSchedule?.local }} </p>
        </ion-col>
     </ion-row>
 

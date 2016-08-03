@@ -8,10 +8,12 @@ import { HomePage } from '../home/home';
 import { SchedulePage } from '../schedule/schedule';
 import { ProfileEditPage } from '../profile-edit/profile-edit';
 import { ScheduleEditPage } from '../schedule-edit/schedule-edit';
+import { DateCustomPipe } from '../../pipes/date-custom-pipe';
 
 @Component({
   templateUrl: 'build/pages/profile/profile.html',
-  providers: [UserStorageService, ScheduleStorageService]
+  providers: [UserStorageService, ScheduleStorageService],
+  pipes: [DateCustomPipe]
 
 })
 
@@ -19,6 +21,7 @@ export class ProfilePage {
   private home = HomePage;
   private profileDatas: any;
   private loading : Loading;
+  private showSchedule: Object;
 
   constructor(private nav: NavController,
     private user: UserStorageService,
@@ -30,6 +33,10 @@ export class ProfilePage {
 
   ngOnInit() {
     this._updateDatas();
+  }
+
+  ionViewWillEnter() {
+    this._getSchedule();
   }
 
   openPage(page) {
@@ -68,6 +75,12 @@ export class ProfilePage {
     });
 
     this.nav.present(modal);
+  }
+
+  _getSchedule() {
+    this.schedule.getCurrentEvent().then((event) => {
+    this.showSchedule = event;
+    })
   }
 
   _updateDatas() {

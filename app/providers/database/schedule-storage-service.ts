@@ -44,15 +44,24 @@ export class ScheduleStorageService {
             startAt: firstDay,
             endAt: lastDay
           }
-        }))
+        }));
       })
     })
   }
 
-  getEvents() {
+  getCurrentEvent() {
     return new Promise((resolve) => {
+      let date = new Date();
+
       this.storage.get('uid').then((uid) => {
-        resolve(this.af.database.list('/schedule/' + uid));
+        this.af.database.list('/schedule/' + uid, {
+          query: {
+            orderByChild: 'date',
+            startAt: date.getTime()
+          }
+        }).subscribe((snapshots) => {
+          resolve(snapshots[0]);
+        })
       })
     })
   }
