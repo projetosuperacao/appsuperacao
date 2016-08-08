@@ -37,7 +37,7 @@ export class MyApp {
         if(!value) {
           this.rootPage = this.login;
         } else {
-          this.rootPage = this.profile;
+          this.rootPage = this.home;
         }
       })
 

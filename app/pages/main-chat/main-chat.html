@@ -1,0 +1,85 @@
+<ion-header class="main-menu">
+  <ion-navbar dark>
+    <ion-row>
+      <ion-col width-25 (click)="openPage(home)"> <ion-icon name="star"></ion-icon> </ion-col>
+      <ion-col width-25 class="selected" (click)="openPage(mainChat)"> <ion-icon name="chatbubbles"></ion-icon> </ion-col>
+      <ion-col width-25> <ion-icon name="heart"></ion-icon> </ion-col>
+      <ion-col width-25 (click)="openPage(profile)"> <ion-icon name="person"></ion-icon> </ion-col>
+    </ion-row>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding class="main-chat background-page" background-page>
+  <p class="title"> Avise seu arcanjo como está se sentindo </p>
+
+    <!-- ========= STATUS =========== -->
+  <div class="status background-light">
+    <ion-row>
+      <ion-col width-20>
+        <ion-icon class="icon-happy"> </ion-icon>
+        <p> Feliz </p>
+      </ion-col>
+
+      <ion-col width-20>
+        <ion-icon class="icon-confused"> </ion-icon>
+
+        <p> Angustia </p>
+      </ion-col>
+
+      <ion-col width-20>
+        <ion-icon class="icon-neutral"> </ion-icon>
+        <p> Tenso </p>
+      </ion-col>
+
+      <ion-col width-20>
+        <ion-icon class="icon-sad"> </ion-icon>
+        <p> Triste </p>
+      </ion-col>
+
+      <ion-col width-20>
+        <ion-icon class="icon-angry"> </ion-icon>
+        <p> Raiva </p>
+      </ion-col>
+    </ion-row>
+  </div>
+
+    <!-- ========= USERS CHAT =========== -->
+    <p class="title"> Mensagens </p>
+
+    <div class="chat-user background-light">
+      <ion-row>
+        <ion-col width-30>
+          <ion-avatar>
+            <img src="https://scontent.xx.fbcdn.net/v/t1.0-1/p100x100/12063636_941683082573027_7391742278564588640_n.jpg?oh=cde59de8c3f06f56c5bf969015c98785&oe=5830B050" />
+          </ion-avatar>
+        </ion-col>
+
+        <ion-col width-50>
+          <p class="title"> Seu anjo </p>
+          <p> Diego Garcia </p>
+        </ion-col>
+        <ion-col width-20>
+          <div class="notification"> 3 </div>
+        </ion-col>
+      </ion-row>
+    </div>
+
+    <div class="chat-user background-light">
+      <ion-row>
+        <ion-col width-30>
+          <ion-avatar>
+            <img src="https://scontent.xx.fbcdn.net/v/t1.0-1/p100x100/12063636_941683082573027_7391742278564588640_n.jpg?oh=cde59de8c3f06f56c5bf969015c98785&oe=5830B050" />
+          </ion-avatar>
+        </ion-col>
+
+        <ion-col width-50>
+          <p class="title"> Seu arcanjo </p>
+          <p> Diego Garcia </p>
+        </ion-col>
+        <ion-col width-20>
+            <div class="notification"> 12 </div>
+        </ion-col>
+      </ion-row>
+    </div>
+
+</ion-content>

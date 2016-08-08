@@ -1,0 +1,36 @@
+.main-chat {
+  .title {
+    color: #696969;
+    font-size: 1.8rem;
+  }
+
+  .status {
+    text-align: center;
+    padding: 1rem;
+
+    ion-icon {
+      color: #696969;
+      font-size: 3rem;
+    }
+  }
+
+  .chat-user {
+    .notification {
+      background: #387ef5;
+      color: #FFF;
+      width: 2.6rem;
+      height: 2.6rem;
+      border-radius: 100%;
+      text-align: center;
+      line-height: 2.6rem;
+      position: absolute;
+      margin-top: 0.8rem;
+    }
+
+    p {
+      margin: 0.4rem;
+      padding: 0;
+    }
+    padding: 1rem;
+  }
+}

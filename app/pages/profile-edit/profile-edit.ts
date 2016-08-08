@@ -8,7 +8,6 @@ import { Camera } from 'ionic-native';
   directives: [FORM_DIRECTIVES]
 })
 export class ProfileEditPage {
-
   private form;
   private user;
   private loading: Loading;
@@ -16,6 +15,7 @@ export class ProfileEditPage {
   private name : Control;
   private birth : Control;
   private type_user : Control;
+  private phone: Control;
   private photo;
   private backgroundImg = "https://placehold.it/150x150"
 
@@ -28,14 +28,13 @@ export class ProfileEditPage {
 
     // Validators
     this.name = new Control(this.user.name, Validators.required);
-    this.birth = new Control("");
     this.type_user = new Control(this.user.type_user, Validators.required);
+    this.phone = new Control(this.user.phone);
     this.photo = this.user.avatar || "https://placehold.it/150x150";
     this.backgroundImg = this.user.back_img || "https://placehold.it/150x150";
 
     this.form = this.fb.group({
       name : this.name,
-      birth: this.birth,
       address : [this.user.address],
       phone: [this.user.phone],
       religion: [this.user.religion],

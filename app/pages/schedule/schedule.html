@@ -12,15 +12,15 @@
     <ion-item-sliding *ngFor="let event of events | async">
       <ion-item (click)="editSchedule(event)">
         <ion-row>
-          <ion-col width-27 class="text-center">
+          <ion-col width-33>
             <h1> {{ event.date | date:'dd' }} </h1>
             <p>  {{ event.date | customDate:'d' }} </p>
             <p>  {{ event.date | date:'H:mm' }}</p>
           </ion-col>
 
-          <ion-col width-73>
+          <ion-col width-67>
             <h2> {{ event.title }} </h2>
-            <p class="content"> {{ event.description | truncate : 60 }} </p>
+            <p class="content"> {{ event.description | truncate : 30 }} </p>
             <p class="location"> {{ event.local }} </p>
            </ion-col>
         </ion-row>
