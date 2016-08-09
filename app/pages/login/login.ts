@@ -186,7 +186,14 @@ export class LoginPage {
   loginGoogle() {
     this.showLoading();
 
-    GooglePlus.login({}).then((success) => {
+    window['plugins'].googleplus.login({}, (success) => {
+      console.log(success);
+    },
+    (error) => {
+      console.log(error);
+    })
+
+    /*GooglePlus.login({'webClientId' : '236648092205-buoo42f7tfit2ojq3bf1jjcmnrgjchg3.apps.googleusercontent.com'}).then((success) => {
       console.log(success);
       let creds = (firebase.auth.GoogleAuthProvider as any).credential(success.authResponse.accessToken)
 
@@ -213,7 +220,7 @@ export class LoginPage {
     }).catch((error) => {
       this.showError("Não logo!" + JSON.stringify(error));
       console.log(error);
-    })
+    })*/
    }
 
   // ===================================== OTHERS METHODS ===================================

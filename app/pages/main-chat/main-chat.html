@@ -82,4 +82,34 @@
       </ion-row>
     </div>
 
+  <!-- ========= SCHEDULE =========== -->
+  <p class="title"> Sua agenda de tratamento </p>
+  <div class="schedule background-light">
+    <ion-row>
+      <ion-col width-30 class="date">
+        <h1> {{ showSchedule?.date | date:'dd' }} </h1>
+        <p>  {{ showSchedule?.date | customDate:'m' }} </p>
+        <p>  {{ showSchedule?.date | customDate:'d' }} </p>
+        <p> {{ showSchedule?.date | date:'HH:mm' }} </p>
+      </ion-col>
+
+      <ion-col width-50 class="query">
+        <p class="title"> Consulta </p>
+        <p> Dr. Luiz Carlos </p>
+      </ion-col>
+
+      <ion-col width-20 class="see">
+        <ion-icon name="md-list"> </ion-icon>
+        <p> Ver </p>
+      </ion-col>
+    </ion-row>
+    <p class="msg"> Informe seu anjo ou arcanjo sobre seu tratamento </p>
+  </div>
+
+  <!-- ========= HELP =========== -->
+  <p class="title"> Problemas com seu anjo ou arcanjo? </p>
+  <div class="help">
+    <button full light> Clique aqui para receber ajuda </button>
+  </div>
+
 </ion-content>

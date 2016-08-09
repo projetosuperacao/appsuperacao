@@ -18,29 +18,13 @@ export class HomePage {
   private mainChat = MainChatPage;
 
   constructor(private nav: NavController, private schedule : ScheduleService ) {
-    
+
   }
 
   openPage(page) {
     this.nav.setRoot(page);
   }
 
-  getSchedule() {
-    this.schedule.getSchedule().then((success) => {
-      console.log(success);
-    }).catch((error) => {
-      console.log(error);
-    })
-  }
-
-  addSchedule() {
-    var obj = {title: 'Test', date: 'Test2'}
-    this.schedule.addSchedule(obj).then((success) => {
-      console.log(success);
-    }).catch((error) => {
-      console.log(error);
-    });
-  }
 
   notification() {
     var push = Push.init({
