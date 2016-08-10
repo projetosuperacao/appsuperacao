@@ -90,12 +90,12 @@ export class ProfilePage {
       content: "Aguarde..."
     })
 
-    this.nav.present(loading).then(() => {
+    /*this.nav.present(loading).then(() => {
       this.user.getUser().then((user) => {
         this.profileDatas = user;
         loading.dismiss();
       })
-    })
+    })*/
   }
 
   logout() {

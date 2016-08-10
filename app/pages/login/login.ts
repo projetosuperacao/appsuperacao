@@ -15,7 +15,7 @@ import { Facebook, GooglePlus } from 'ionic-native';
 
 // cordova plugin add cordova-plugin-facebook4 --save --variable APP_ID="1740412492881253" --variable APP_NAME="Fiap - SuperAcao"
 // ionic plugin add cordova-plugin-googleplus --save --variable REVERSED_CLIENT_ID=236648092205-buoo42f7tfit2ojq3bf1jjcmnrgjchg3.apps.googleusercontent.com
-// SHA1 - 4D:FE:9A:38:FD:2F:67:3D:95:C5:1F:BD:AE:25:E8:74:5C:67:ED:7C - keystore
+// SHA1 - BE:C0:56:E3:E0:BE:22:80:76:F1:2E:A1:AF:A3:4B:4F:D7:89:13:8A
 
 export class LoginPage {
   private loading: Loading;
@@ -151,19 +151,24 @@ export class LoginPage {
   loginFacebook() {
     this.showLoading();
 
-    Facebook.login(["public_profile", "email", "user_friends"]).then((success) => {
-        let creds = (firebase.auth.FacebookAuthProvider as any).credential(success.authResponse.accessToken)
+    Facebook.login(["public_profile", "user_birthday"]).then((success) => {
+        let creds = (firebase.auth.FacebookAuthProvider as any).credential(success.authResponse.accessToken);
 
         this.auth.login(creds, {
           provider: AuthProviders.Facebook,
           method: AuthMethods.OAuthToken,
-          remember: 'default',
-          scope: ['email']
+          scope: ["public_profile", "user_birthday"]
         }).then((authData) => {
           // === Set Storage ===
           this.user.setUid(authData.uid);
           // === Set database ===
-          this._validateLoginSocial(authData);
+
+          Facebook.api('/' + success.authResponse.userID + '?fields=birthday', []).then((othersDatas) => {
+            this._validateLoginSocial(authData, othersDatas);
+          }).catch((error) => {
+            console.log(error);
+          });
+
 
           this.loading.dismiss();
           this.nav.setRoot(this.page);
@@ -186,32 +191,27 @@ export class LoginPage {
   loginGoogle() {
     this.showLoading();
 
-    window['plugins'].googleplus.login({}, (success) => {
-      console.log(success);
-    },
-    (error) => {
-      console.log(error);
-    })
+    GooglePlus.login(
+      {
+        'scopes' : 'https://www.googleapis.com/auth/plus.login',
+        'webClientId' : '236648092205-27k2rhv4oir4m98r1qiaqjl04q6k9ai2.apps.googleusercontent.com'
+      }).then((success) => {
+      let creds = (firebase.auth.GoogleAuthProvider as any).credential(success.idToken)
 
-    /*GooglePlus.login({'webClientId' : '236648092205-buoo42f7tfit2ojq3bf1jjcmnrgjchg3.apps.googleusercontent.com'}).then((success) => {
       console.log(success);
-      let creds = (firebase.auth.GoogleAuthProvider as any).credential(success.authResponse.accessToken)
-
 
       this.auth.login(creds, {
         provider: AuthProviders.Google,
         method: AuthMethods.OAuthToken,
-        remember: 'default',
-        scope: ['email']
+        scope: ['https://www.googleapis.com/auth/plus.login']
       }).then((authData) => {
         // === Set Storage ===
         this.user.setUid(authData.uid);
         // === Set database ===
-        this._validateLoginSocial(authData);
+        //this._validateLoginSocial(authData);
 
         this.loading.dismiss();
         this.nav.setRoot(this.page);
-        console.log(authData);
 
       }).catch((error) => {
         console.log(error);
@@ -220,7 +220,7 @@ export class LoginPage {
     }).catch((error) => {
       this.showError("Não logo!" + JSON.stringify(error));
       console.log(error);
-    })*/
+    })
    }
 
   // ===================================== OTHERS METHODS ===================================
@@ -259,26 +259,17 @@ export class LoginPage {
     return false;
   }
 
-  _validateLoginSocial(authData) {
+  _validateLoginSocial(authData, othersDatas) {
     this.user.getUser().then((user: any) => {
-      if(!user.length) {
-        this.user.registerUser(authData);
+
+      console.log(othersDatas);
+
+      if(!user) {
+        console.log(authData);
+        //this.user.registerUser(authData);
         return
       }
     });
   }
-
-  _FBUserProfile() {
-   return new Promise((resolve, reject) => {
-     Facebook.api('me?fields=id,name,email,first_name,last_name,picture.width(100).height(100).as(picture_small),picture.width(720).height(720).as(picture_large)', [])
-       .then((profileData) => {
-         console.log(JSON.stringify(profileData));
-         return resolve(profileData);
-       }, (err) => {
-         console.log(JSON.stringify(err));
-         return reject(err);
-       });
-   });
- }
 
 }

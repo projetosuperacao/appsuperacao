@@ -56,4 +56,17 @@ export class DateUtil {
     return result.getTime();
   }
 
+  countTime(time, resolve) {
+    let count = 0;
+    setInterval(() => {
+
+      if(count >= time) {
+          resolve(false);
+      } else {
+          resolve(true);
+      }
+      count++;
+    },1000)
+  }
+
 }
