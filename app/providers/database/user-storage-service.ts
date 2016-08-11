@@ -57,13 +57,13 @@ export class UserStorageService {
     return new Promise((resolve) => {
       this.storage.get('uid').then((uid) => {
           this.af.database.object('/users/' + uid).subscribe((data) => {
-              if(!data.value) {
-                resolve(null);
+
+              if(!user) {
+                resolve(false);
                 return;
               }
-              
+
               let userData = data[Object.keys(data)[0]];
-              console.log(data);
               user = userData;
               user.uid = data.$key;
               user.$key = Object.keys(data)[0];

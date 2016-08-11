@@ -74,17 +74,12 @@
           </form>
         </div>
 
-        <div class="buttons">
-          <ion-row>
-            <ion-col width-50>
-              <button (click)="loginFacebook()" full facebook> <ion-icon name="logo-facebook"></ion-icon> Facebook </button>
-            </ion-col>
-
-            <ion-col width-50>
-                <button (click)="loginGoogle()" full danger> <ion-icon name="logo-googleplus"></ion-icon> Google + </button>
-            </ion-col>
-          </ion-row>
+        <div padding>
+          <button (click)="loginFacebook()" full facebook> <ion-icon name="logo-facebook"></ion-icon> Facebook </button>
         </div>
+            <!--<ion-col width-50>
+                <button (click)="loginGoogle()" full danger> <ion-icon name="logo-googleplus"></ion-icon> Google + </button>
+            </ion-col>-->
 
         <div padding>
            <p *ngIf="error" class="error">{{ error._body }}</p>

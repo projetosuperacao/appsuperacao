@@ -189,9 +189,9 @@ export class LoginPage {
 
   // ===================================== LOGIN GOOGLEPLUS ===================================
   loginGoogle() {
-    this.showLoading();
+    //this.showLoading();
 
-    GooglePlus.login(
+    /*GooglePlus.login(
       {
         'scopes' : 'https://www.googleapis.com/auth/plus.login',
         'webClientId' : '236648092205-27k2rhv4oir4m98r1qiaqjl04q6k9ai2.apps.googleusercontent.com'
@@ -220,7 +220,7 @@ export class LoginPage {
     }).catch((error) => {
       this.showError("Não logo!" + JSON.stringify(error));
       console.log(error);
-    })
+    })*/
    }
 
   // ===================================== OTHERS METHODS ===================================
@@ -262,11 +262,13 @@ export class LoginPage {
   _validateLoginSocial(authData, othersDatas) {
     this.user.getUser().then((user: any) => {
 
-      console.log(othersDatas);
+      console.log(user);
+
+      authData.birth = othersDatas.birthday;
+      console.log(authData);
 
       if(!user) {
-        console.log(authData);
-        //this.user.registerUser(authData);
+        this.user.registerUser(authData);
         return
       }
     });
