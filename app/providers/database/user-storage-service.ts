@@ -1,5 +1,5 @@
 import { Injectable, OnInit } from '@angular/core';
-import { Storage, LocalStorage, Loading } from 'ionic-angular';
+import { Storage, LocalStorage } from 'ionic-angular';
 import { AngularFire, FirebaseListObservable } from 'angularfire2';
 import 'rxjs/add/operator/map';
 
@@ -57,11 +57,6 @@ export class UserStorageService {
     return new Promise((resolve) => {
       this.storage.get('uid').then((uid) => {
           this.af.database.object('/users/' + uid).subscribe((data) => {
-
-              if(!user) {
-                resolve(false);
-                return;
-              }
 
               let userData = data[Object.keys(data)[0]];
               user = userData;

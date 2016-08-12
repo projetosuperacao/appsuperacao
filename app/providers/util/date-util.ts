@@ -22,6 +22,11 @@ export class DateUtil {
     return year + "-" + month  + "-" + day;
   }
 
+  formatDateString(date: string) {
+    let parseDate = date.split("/");
+    return parseDate[2] + "-" + parseDate[0] + "-" + parseDate[1];
+  }
+
   formatTime(milis: number) {
     let date = new Date(milis);
     let start = "00";
@@ -55,6 +60,8 @@ export class DateUtil {
     let result = new Date(year, month + 1, 0);
     return result.getTime();
   }
+
+
 
   countTime(time, resolve) {
     let count = 0;

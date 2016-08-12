@@ -1,0 +1,40 @@
+
+.chat {
+
+  .clear {
+    clear: both;
+  }
+
+  .left {
+    float: left;
+  }
+
+  .right {
+    float: right;
+  }
+
+  .message {
+    background: #FFF;
+    width: 80%;
+    margin: 1rem;
+    padding: 1rem;
+
+    p {
+      line-height: 2rem;
+      color: #696969;
+    }
+  }
+
+  input {
+    display: block;
+    width: 100%;
+    padding: 1.5rem;
+    resize: none;
+    border: none;
+    background: #FFF;
+  }
+
+  button {
+    padding: 1rem;
+  }
+}

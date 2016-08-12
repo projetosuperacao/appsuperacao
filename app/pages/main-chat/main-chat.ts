@@ -4,6 +4,7 @@ import { HomePage } from '../home/home';
 import { ProfilePage } from '../profile/profile';
 import { ScheduleStorageService } from '../../providers/database/schedule-storage-service';
 import { DateCustomPipe } from '../../pipes/date-custom-pipe'
+import { ChatPage } from '../chat/chat';
 
 
 @Component({
@@ -23,6 +24,10 @@ export class MainChatPage {
 
   openPage(page) {
     this.nav.setRoot(page);
+  }
+
+  openChat() {
+    this.nav.push(ChatPage);
   }
 
   ngOnInit() {

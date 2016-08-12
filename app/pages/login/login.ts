@@ -6,11 +6,12 @@ import { FirebaseAuth, AuthProviders, AuthMethods } from 'angularfire2';
 import { UserStorageService } from '../../providers/database/user-storage-service';
 import { FORM_DIRECTIVES, FormBuilder, Validators, Control } from '@angular/common';
 import { Facebook, GooglePlus } from 'ionic-native';
+import { DateUtil } from '../../providers/util/date-util';
 
 @Component({
   templateUrl: 'build/pages/login/login.html',
   directives: [FORM_DIRECTIVES],
-  providers: [UserStorageService]
+  providers: [UserStorageService, DateUtil]
 })
 
 // cordova plugin add cordova-plugin-facebook4 --save --variable APP_ID="1740412492881253" --variable APP_NAME="Fiap - SuperAcao"
@@ -37,7 +38,8 @@ export class LoginPage {
    private auth : FirebaseAuth,
    private user : UserStorageService,
    private plataform : Platform,
-   private fb : FormBuilder) {
+   private fb : FormBuilder,
+   private dateUtil: DateUtil) {
 
   // ===== Validators ======
   this.name = new Control("", Validators.required);
@@ -140,7 +142,7 @@ export class LoginPage {
         } else if (this.messages.password_wrong === error.code) {
           this.showError("Senha incorreta!");
         } else if (this.messages.email_not_found === error.code) {
-          this.showError("Esta não está cadastrado!")
+          this.showError("Esta conta não está cadastrado!")
         }
 
         console.log(error);
@@ -262,10 +264,9 @@ export class LoginPage {
   _validateLoginSocial(authData, othersDatas) {
     this.user.getUser().then((user: any) => {
 
-      console.log(user);
+      authData.birth = this.dateUtil.formatDateString(othersDatas.birthday);
 
-      authData.birth = othersDatas.birthday;
-      console.log(authData);
+      console.log(user);
 
       if(!user) {
         this.user.registerUser(authData);

@@ -41,7 +41,7 @@
       </ion-row>
     </ion-card-header>
 
-    <ion-row class="calendar">
+    <ion-row class="calendar" *ngIf="showSchedule">
       <ion-col width-27 class="dates">
         <h1> {{ showSchedule?.date | date:'dd' }} </h1>
         <p class="content"> {{ showSchedule?.date | customDate:'m' }} </p>
@@ -55,6 +55,10 @@
         <p class="location"> {{ showSchedule?.local }} </p>
        </ion-col>
     </ion-row>
+
+    <div class="calendar" *ngIf="!showSchedule">
+      <p class="msg"> Não há nenhum evento cadastrado </p>
+    </div>
 
     <ion-row class="buttons">
       <ion-col width-50>

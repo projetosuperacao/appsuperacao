@@ -16,10 +16,10 @@ import {UserStorageService} from './providers/database/user-storage-service';
     UserStorageService,
     FIREBASE_PROVIDERS,
     defaultFirebase({
-      apiKey: "AIzaSyD-6FH9KzJsBJeN9nZgE_A8nPlMvLj-tbg",
-      authDomain: "projetosuperacao-1382.firebaseapp.com",
-      databaseURL: "https://projetosuperacao-1382.firebaseio.com",
-      storageBucket: "projetosuperacao-1382.appspot.com"
+      apiKey: "AIzaSyAnTqOEZHBU-1CMx0fKY2v4zFeGvPnvA1I",
+      authDomain: "superacao-dc62e.firebaseapp.com",
+      databaseURL: "https://superacao-dc62e.firebaseio.com",
+      storageBucket: "superacao-dc62e.appspot.com"
     }),
     firebaseAuthConfig({})
   ]
