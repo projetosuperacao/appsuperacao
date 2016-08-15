@@ -53,7 +53,7 @@ export class ProfilePage {
         return;
       }
 
-      this.user.updateUser(datas, this.profileDatas.uid);
+      this.user.updateUser(datas, this.profileDatas.$key);
       this._updateDatas();
     });
 
@@ -86,6 +86,7 @@ export class ProfilePage {
   }
 
   _updateDatas() {
+
     let loading = Loading.create({
       content: "Aguarde..."
     })

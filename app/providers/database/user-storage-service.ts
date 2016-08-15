@@ -9,7 +9,7 @@ import 'rxjs/add/operator/map';
 
 export class UserStorageService {
   public storage : Storage;
-  private db : FirebaseListObservable<any>;
+  private db : any
   private uid;
 
   constructor(private af: AngularFire) {
@@ -42,12 +42,8 @@ export class UserStorageService {
       type_user: "Superador"
     }
 
-    this.db = this.af.database.list('/users/' + result.uid);
-    this.db.push(data).then((success) => {
-      //console.log(success);
-    }).catch((error) => {
-      console.log(error);
-    });
+    this.db = this.af.database.object('/users/' + result.uid);
+    this.db.set(data);
   }
 
 
@@ -56,28 +52,24 @@ export class UserStorageService {
 
     return new Promise((resolve) => {
       this.storage.get('uid').then((uid) => {
-          this.af.database.object('/users/' + uid).subscribe((data) => {
 
-              let userData = data[Object.keys(data)[0]];
-              user = userData;
-              user.uid = data.$key;
-              user.$key = Object.keys(data)[0];
-              resolve(user);
+          this.af.database.object('/users/' + uid).subscribe((data) => {
+              resolve(data);
           });
       });
     });
   }
 
   updateUser(user, uid) {
-    let key = user.$key;
     delete user.$key;
 
-    this.db = this.af.database.list('/users/' + uid);
-    this.db.update(key, user).then((success) => {
-        console.log('foi!');
-    }).catch((error) => {
-        console.log(error)
-    })
+    this.db = this.af.database.object('/users/' + uid);
+    this.db.set(user)
+  }
+
+  findUser(uid) {
+    this.db = this.af.database.object('/users/' +uid);
+    return this.db;
   }
 
 

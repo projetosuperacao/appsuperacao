@@ -171,10 +171,6 @@ export class LoginPage {
             console.log(error);
           });
 
-
-          this.loading.dismiss();
-          this.nav.setRoot(this.page);
-
         }).catch((error) => {
           console.log(error);
           this.showError("Firebase failure:");
@@ -266,12 +262,16 @@ export class LoginPage {
 
       authData.birth = this.dateUtil.formatDateString(othersDatas.birthday);
 
-      console.log(user);
-
-      if(!user) {
+      if(!user.value) {
         this.user.registerUser(authData);
+
+        this.loading.dismiss();
+        this.nav.setRoot(this.page);
         return
       }
+
+      this.loading.dismiss();
+      this.nav.setRoot(this.page);
     });
   }
 

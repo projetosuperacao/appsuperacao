@@ -23,8 +23,10 @@ export class DateUtil {
   }
 
   formatDateString(date: string) {
-    let parseDate = date.split("/");
-    return parseDate[2] + "-" + parseDate[0] + "-" + parseDate[1];
+    let parseDate = new Date(date);
+    return parseDate.getTime();
+    //let parseDate = date.split("/");
+    //return parseDate[2] + "-" + parseDate[0] + "-" + parseDate[1];
   }
 
   formatTime(milis: number) {
