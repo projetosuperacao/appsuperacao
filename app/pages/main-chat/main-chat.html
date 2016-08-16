@@ -46,25 +46,25 @@
     <!-- ========= USERS CHAT =========== -->
     <p class="title"> Mensagens </p>
 
-    <div class="chat-user background-light">
-      <ion-row (click)="openChat()">
+    <div *ngFor="let item of listMatch" class="chat-user background-light">
+      <ion-row (click)="openChat(item)">
         <ion-col width-30>
           <ion-avatar>
-            <img src="https://scontent.xx.fbcdn.net/v/t1.0-1/p100x100/12063636_941683082573027_7391742278564588640_n.jpg?oh=cde59de8c3f06f56c5bf969015c98785&oe=5830B050" />
+            <img src="{{ item.avatar }}" />
           </ion-avatar>
         </ion-col>
 
         <ion-col width-50>
-          <p class="title"> Seu anjo </p>
-          <p> Diego Garcia </p>
+          <p class="title"> {{ item.type_user}} </p>
+          <p> {{ item.name }} </p>
         </ion-col>
         <ion-col width-20>
-          <div class="notification"> 3 </div>
+          <div class="notification"> <!--{{ countMsg(item.chatToken) }}--> </div>
         </ion-col>
       </ion-row>
     </div>
 
-    <div class="chat-user background-light">
+    <!--<div class="chat-user background-light">
       <ion-row (click)="openChat()">
         <ion-col width-30>
           <ion-avatar>
@@ -80,7 +80,7 @@
             <div class="notification"> 12 </div>
         </ion-col>
       </ion-row>
-    </div>
+    </div>-->
 
   <!-- ========= SCHEDULE =========== -->
   <p class="title"> Sua agenda de tratamento </p>

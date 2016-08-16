@@ -1,6 +1,7 @@
 import { Injectable, OnInit } from '@angular/core';
 import { Storage, LocalStorage } from 'ionic-angular';
 import { AngularFire, FirebaseListObservable } from 'angularfire2';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/add/operator/map';
 
 
@@ -12,12 +13,12 @@ export class MatchStorageService {
 
   }
 
-  registerMatch(uid : StringConstructor, users) {
+  registerMatch(uid, users) {
     this.db = this.af.database.list('/match/' + uid);
     this.db.push(users);
   }
 
-  getMatch(uid : string) {
+  getMatch(uid) {
     return this.af.database.list('/match/' + uid);
   }
 }

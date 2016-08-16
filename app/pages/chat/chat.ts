@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { ChatStorageService} from '../../providers/database/chat-storage-service';
 import { UserStorageService } from '../../providers/database/user-storage-service';
 
@@ -22,19 +22,18 @@ export class ChatPage {
   }*/
 
   constructor(
-
     private nav: NavController,
+    private params: NavParams,
     private chat: ChatStorageService,
     private user : UserStorageService) {
+
+    this.user2Datas = this.params.get('user');
 
     this.user.getUser().then((datas : any) => {
       this.userDatas = datas
     });
 
-    this.listMessages = this.chat.getChat('d3c47ba6-7656-a6ab-1f21-38f52c3a9c76');
-
-    this.listMessages.subscribe((snapshots) => {
-    });
+    this.listMessages = this.chat.getChat(this.user2Datas.chatToken);
   }
 
   sendMessage() {
@@ -44,7 +43,7 @@ export class ChatPage {
       date: new Date().getTime()
     }
 
-    this.chat.pushMessage(msgWrapper, 'd3c47ba6-7656-a6ab-1f21-38f52c3a9c76');
+    this.chat.pushMessage(msgWrapper, this.user2Datas.chatToken);
   }
 
 }

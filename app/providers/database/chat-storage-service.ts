@@ -21,22 +21,28 @@ export class ChatStorageService {
     return this.db;
   }
 
+  countMessages(chatToken) {
+    return new Promise((resolve) => {
+      this.af.database.list('/chat/' + chatToken).subscribe((snapshots) => {
+        resolve(snapshots.length);
+      });
+    });
+  }
+
   pushMessage(datas,chatToken) {
 
-    if(!chatToken) {
-      this.db = this.af.database.list('/chat/' + this._generateChatToken());
+    /*if(!chatToken) {
+      this.db = this.af.database.list('/chat/' + this.generateChatToken());
       this.db.push(datas);
-      console.log(this._generateChatToken());
       return;
-    }
+    }*/
 
     this.db = this.af.database.list('/chat/' + chatToken);
     this.db.push(datas);
-    console.log(chatToken);
 
   }
 
-   _generateChatToken() {
+   generateChatToken() {
       function s4() {
         return Math.floor((1 + Math.random()) * 0x10000)
         .toString(16)
@@ -46,6 +52,8 @@ export class ChatStorageService {
       return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
         s4() + '-' + s4() + s4() + s4();
    }
+
+
 }
 
 /*
