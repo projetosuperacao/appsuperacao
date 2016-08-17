@@ -50,7 +50,7 @@ export class MainChatPage {
 
   _updateDatas() {
     this.user.getUser().then((user : any) => {
-      this.match.getMatch(user.$key).subscribe((snapshots) => {
+      this.match.getMatch(user.$key).then((snapshots) => {
         this._getListMatch(snapshots);
       })
     });
@@ -61,14 +61,12 @@ export class MainChatPage {
   }
 
   _getListMatch(snapshots) {
-
-    /*snapshots.forEach((snapshot : any) => {
+    snapshots.forEach((snapshot : any) => {
       this.user.findUser(snapshot.$key).subscribe((users) => {
         users.chatToken = snapshot.$value;
         this.listMatch.push(users);
-
       });
-    })*/
+    });
   }
 
 

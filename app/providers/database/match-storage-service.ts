@@ -8,9 +8,11 @@ import 'rxjs/add/operator/map';
 @Injectable()
 
 export class MatchStorageService {
-  private db;
-  constructor(private af: AngularFire) {
+  private db : FirebaseListObservable<any>;
+  private subject : BehaviorSubject<any>;
 
+  constructor(private af: AngularFire) {
+    this.subject = new BehaviorSubject(null)
   }
 
   registerMatch(uid, users) {
@@ -19,7 +21,21 @@ export class MatchStorageService {
   }
 
   getMatch(uid) {
-    return this.af.database.list('/match/' + uid);
+    return new Promise((resolve) => {
+
+      this.af.database.list('/match/' + uid).subscribe((snapshots) =>{
+        this.subject.next(snapshots);
+      })
+
+      if(!this.subject.getValue()) {
+          this.af.database.list('/match/' + uid).subscribe((snapshots) =>{
+            resolve(snapshots);
+          });
+          return;
+      }
+
+      resolve(this.subject.getValue());
+    });
   }
 }
 

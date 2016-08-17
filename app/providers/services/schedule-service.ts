@@ -52,8 +52,7 @@ export class ScheduleService {
       this.http.post('http://localhost:3000/schedule', body, options)
         .map(res => res.json())
         .subscribe(data => {
-          // we've got back the raw data, now generate the core schedule data
-          // and save the data for later reference
+
           this.data = data;
           resolve(this.data);
         });
