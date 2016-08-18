@@ -5,7 +5,7 @@ import { UserStorageService } from '../../providers/database/user-storage-servic
 import { ScheduleStorageService } from '../../providers/database/schedule-storage-service';
 import { LoginPage } from '../login/login';
 import { HomePage } from '../home/home';
-import { MainChatPage } from '../main-chat/main-chat';
+import { TrinityPage } from '../trinity/trinity';
 import { SchedulePage } from '../schedule/schedule';
 import { ProfileEditPage } from '../profile-edit/profile-edit';
 import { ScheduleEditPage } from '../schedule-edit/schedule-edit';
@@ -20,7 +20,7 @@ import { DateCustomPipe } from '../../pipes/date-custom-pipe';
 
 export class ProfilePage {
   private home = HomePage;
-  private mainChat = MainChatPage;
+  private trinity = TrinityPage;
   private profileDatas: any;
   private loading : Loading;
   private showSchedule: Object;

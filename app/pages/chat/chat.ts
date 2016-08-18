@@ -1,49 +1,38 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { ChatStorageService} from '../../providers/database/chat-storage-service';
-import { UserStorageService } from '../../providers/database/user-storage-service';
 
 @Component({
   templateUrl: 'build/pages/chat/chat.html',
-  providers: [ChatStorageService, UserStorageService]
+  providers: [ChatStorageService]
 })
 
 export class ChatPage {
   private message: Object;
   private listMessages;
-  private userDatas;
-  private user2Datas;
+  private user;
+  private chatUid;
   private ctrlFloat = true;
-
-  /*private paramsChat = {
-    fromUser : '4htY65BKG9Oh4hmf0ycr1RdUyns1',
-    toUser: 'WXop8sxkTNbIvDA4lL42AlVSotz2',
-    chatUid: '-KPEAyKxQ1CL1l-J3uys'
-  }*/
 
   constructor(
     private nav: NavController,
     private params: NavParams,
-    private chat: ChatStorageService,
-    private user : UserStorageService) {
+    private chat: ChatStorageService) {
 
-    this.user2Datas = this.params.get('user');
+    this.user = this.params.get('user');
+    this.chatUid = this.params.get('chat');
 
-    this.user.getUser().then((datas : any) => {
-      this.userDatas = datas
-    });
-
-    this.listMessages = this.chat.getChat(this.user2Datas.chatToken);
+    this.listMessages = this.chat.getMessages(this.chatUid);
   }
 
   sendMessage() {
     let msgWrapper = {
-      uidUser : this.userDatas.$key,
+      uid_user : this.user.$key,
       msg : this.message,
-      date: new Date().getTime()
+      created_at: new Date().getTime()
     }
 
-    this.chat.pushMessage(msgWrapper, this.user2Datas.chatToken);
+    this.chat.pushMessage(msgWrapper, this.chatUid);
   }
 
 }

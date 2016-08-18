@@ -4,30 +4,31 @@ import { HomePage } from '../home/home';
 import { ProfilePage } from '../profile/profile';
 import { ScheduleStorageService } from '../../providers/database/schedule-storage-service';
 import { UserStorageService } from '../../providers/database/user-storage-service';
-import { MatchStorageService } from '../../providers/database/match-storage-service';
 import { ChatStorageService } from '../../providers/database/chat-storage-service';
 import { DateCustomPipe } from '../../pipes/date-custom-pipe'
+import { TrinityService } from '../../providers/services/trinity-service';
 import { ChatPage } from '../chat/chat';
 
 
 @Component({
-  templateUrl: 'build/pages/main-chat/main-chat.html',
-  providers: [ScheduleStorageService, UserStorageService, MatchStorageService, ChatStorageService],
+  templateUrl: 'build/pages/trinity/trinity.html',
+  providers: [ScheduleStorageService, UserStorageService, ChatStorageService, TrinityService],
   pipes: [DateCustomPipe]
 })
-export class MainChatPage {
+export class TrinityPage {
 
   private home = HomePage;
   private profile = ProfilePage;
   private showSchedule : Object;
   private listMatch = [];
+  private trinity : any;
 
 
   constructor(
     private nav: NavController,
     private schedule: ScheduleStorageService,
     private user: UserStorageService,
-    private match: MatchStorageService,
+    private trinityService: TrinityService,
     private chat: ChatStorageService) {
 
   }
@@ -40,8 +41,18 @@ export class MainChatPage {
     this.nav.setRoot(page);
   }
 
-  openChat(userDatas) {
-    this.nav.push(ChatPage, {'user' : userDatas});
+  openChat(user2) {
+    this.user.getUser().then((user : any) => {
+      this.chat.getChat(user.$key, user2.$key).then((snapshot : any) => {
+          if(!snapshot) {
+            let uid = this.chat.createChat(user.$key, user2.$key);
+            this.nav.push(ChatPage, {'user' : user, 'chat' : uid.chatUid});
+            return;
+          }
+
+          this.nav.push(ChatPage, {'user' : user, 'chat' : snapshot.chatUid});
+        })
+    })
   }
 
   countMsg(chatToken) {
@@ -49,10 +60,10 @@ export class MainChatPage {
   }
 
   _updateDatas() {
-    this.user.getUser().then((user : any) => {
-      this.match.getMatch(user.$key).then((snapshots) => {
-        this._getListMatch(snapshots);
-      })
+    this.trinity = null;
+
+    this.user.findUser("5vRr9IEYwIZaApvZo1sfsEkidHi1").subscribe((snapshots) => {
+      this.listMatch.push(snapshots);
     });
 
     this.schedule.getCurrentEvent().then((event) => {
@@ -60,14 +71,8 @@ export class MainChatPage {
     });
   }
 
-  _getListMatch(snapshots) {
-    snapshots.forEach((snapshot : any) => {
-      this.user.findUser(snapshot.$key).subscribe((users) => {
-        users.chatToken = snapshot.$value;
-        this.listMatch.push(users);
-      });
-    });
-  }
+
+
 
 
 }

@@ -9,7 +9,14 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding class="main-chat background-page" background-page>
+<ion-content *ngIf="!trinity" padding class="trinity background-page">
+  <div class="form-active">
+    <h1> Ativação da aplicação </h1>
+    <ion-input type="text" placeholder="Digite seu código"> </ion-input>
+  </div>
+</ion-content>
+
+<ion-content *ngIf="trinity" padding class="trinity background-page">
   <p class="title"> Avise seu arcanjo como está se sentindo </p>
 
     <!-- ========= STATUS =========== -->
@@ -63,24 +70,6 @@
         </ion-col>
       </ion-row>
     </div>
-
-    <!--<div class="chat-user background-light">
-      <ion-row (click)="openChat()">
-        <ion-col width-30>
-          <ion-avatar>
-            <img src="https://scontent.xx.fbcdn.net/v/t1.0-1/p100x100/12063636_941683082573027_7391742278564588640_n.jpg?oh=cde59de8c3f06f56c5bf969015c98785&oe=5830B050" />
-          </ion-avatar>
-        </ion-col>
-
-        <ion-col width-50>
-          <p class="title"> Seu arcanjo </p>
-          <p> Diego Garcia </p>
-        </ion-col>
-        <ion-col width-20>
-            <div class="notification"> 12 </div>
-        </ion-col>
-      </ion-row>
-    </div>-->
 
   <!-- ========= SCHEDULE =========== -->
   <p class="title"> Sua agenda de tratamento </p>

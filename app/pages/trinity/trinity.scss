@@ -1,4 +1,16 @@
-.main-chat {
+.trinity{
+
+  .form-active {
+    text-align: center;
+    margin-top: 3rem;
+
+    ion-input {
+      width: 100%;
+      font-size: 2rem;
+      background: #FFF;
+    }
+  }
+
   .title {
     color: #696969;
     font-size: 1.8rem;

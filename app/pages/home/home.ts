@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, Storage, LocalStorage } from 'ionic-angular';
 import { LoginPage } from '../login/login';
 import { ProfilePage } from '../profile/profile';
-import { MainChatPage } from '../main-chat/main-chat';
+import { TrinityPage } from '../trinity/trinity';
 import { Push } from 'ionic-native';
 import { ScheduleService } from '../../providers/services/schedule-service';
 
@@ -15,7 +15,7 @@ import { ScheduleService } from '../../providers/services/schedule-service';
 export class HomePage {
 
   private profile = ProfilePage;
-  private mainChat = MainChatPage;
+  private trinity = TrinityPage;
 
   constructor(private nav: NavController, private schedule : ScheduleService ) {
 

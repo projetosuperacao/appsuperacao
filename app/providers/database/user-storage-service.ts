@@ -52,7 +52,6 @@ export class UserStorageService {
 
     return new Promise((resolve) => {
       this.storage.get('uid').then((uid) => {
-
           this.af.database.object('/users/' + uid).subscribe((data) => {
               resolve(data);
           });
